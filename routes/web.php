@@ -6,6 +6,8 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GuestBookingController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\FacilityController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +77,19 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
     Route::resource('guests', GuestController::class);
     Route::resource('bookings', BookingController::class);
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
+});
+
+// Superadmin Routes
+Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
+    // Master Data - Districts
+    Route::resource('districts', DistrictController::class)->except(['show']);
+});
+Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
+    // Master Data - Districts
+    Route::resource('districts', DistrictController::class)->except(['show']);
+
+    // Master Data - Fasilitas
+    Route::resource('facilities', FacilityController::class)->except(['show']);
 });
 
 require __DIR__ . '/auth.php';

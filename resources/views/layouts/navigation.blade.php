@@ -6,7 +6,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ auth()->user()->is_staff ? route('staff.dashboard') : route('dashboard') }}"
+                    <a href="{{ auth()->user()->isStaff() ? route('staff.dashboard') : route('dashboard') }}"
                         class="flex items-center space-x-2">
                         <div
                             class="w-10 h-10 rounded-full bg-luxury-800 dark:bg-luxury-700 flex items-center justify-center">
@@ -22,10 +22,21 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @if (auth()->user()->is_staff)
+                    @if (auth()->user()->isStaff())
                         <x-nav-link :href="route('staff.dashboard')" :active="request()->routeIs('staff.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+
+                        {{-- Menu untuk Superadmin --}}
+                        @if (auth()->user()->isSuperadmin())
+                            <x-nav-link :href="route('districts.index')" :active="request()->routeIs('districts.*')">
+                                {{ __('Districts') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
+                                {{ __('Facilities') }}
+                            </x-nav-link>
+                        @endif
+
                         <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.*')">
                             {{ __('Rooms') }}
                         </x-nav-link>
@@ -116,10 +127,21 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @if (auth()->user()->is_staff)
+            @if (auth()->user()->isStaff())
                 <x-responsive-nav-link :href="route('staff.dashboard')" :active="request()->routeIs('staff.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
+
+                {{-- Menu untuk Superadmin --}}
+                @if (auth()->user()->isSuperadmin())
+                    <x-responsive-nav-link :href="route('districts.index')" :active="request()->routeIs('districts.*')">
+                        {{ __('Kecamatan') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('fasilitas.*')">
+                        {{ __('Fasilitas') }}
+                    </x-responsive-nav-link>
+                @endif
+
                 <x-responsive-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.*')">
                     {{ __('Rooms') }}
                 </x-responsive-nav-link>
@@ -155,8 +177,8 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
