@@ -26,8 +26,20 @@ class Room extends Model
         'amenities'
     ];
 
+    /**
+     * Get all bookings for this room.
+     */
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Get all facilities for this room.
+     * Many-to-Many relationship
+     */
+    public function facilities()
+    {
+        return $this->belongsToMany(Facility::class, 'room_facilities', 'room_id', 'facility_id');
     }
 }
