@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
             'name' => 'Hotel Staff',
             'email' => 'staff@example.com',
             'password' => Hash::make('password'),
-            'is_staff' => true,
         ]);
 
         // Create regular user
@@ -23,7 +22,6 @@ class UserSeeder extends Seeder
             'name' => 'John Doe',
             'email' => 'guest@example.com',
             'password' => Hash::make('password'),
-            'is_staff' => false,
         ]);
     }
 }

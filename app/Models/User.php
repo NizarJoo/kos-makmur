@@ -22,7 +22,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'is_staff', // Keep untuk backward compatibility
     ];
 
     /**
@@ -43,7 +42,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_staff' => 'boolean',
     ];
 
     /**
@@ -89,13 +87,5 @@ class User extends Authenticatable
     public function isStaff(): bool
     {
         return in_array($this->role, ['admin', 'superadmin']);
-    }
-
-    /**
-     * Accessor untuk is_staff (backward compatibility)
-     */
-    public function getIsStaffAttribute(): bool
-    {
-        return $this->isStaff();
     }
 }
