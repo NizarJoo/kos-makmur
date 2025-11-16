@@ -57,6 +57,33 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        return redirect()->route('profile.create');
+    }
+
+    public function createOwner()
+    {
+        return view('auth.register-owner');
+    }
+
+    public function storeOwner(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'admin', // SET PEMILIK KOS
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
         return redirect()->route('dashboard');
     }
 }

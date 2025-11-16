@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-serif text-2xl font-bold text-luxury-800 dark:text-gold-300">
-            {{ __('Staff Dashboard') }}
+            {{ ucfirst(Auth::user()->role) }} Dashboard
         </h2>
     </x-slot>
 
