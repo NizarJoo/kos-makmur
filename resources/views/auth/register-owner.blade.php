@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" class="space-y-7">
+        <form method="POST" action="{{ route('register.owner.store') }}" class="space-y-7">
             @csrf
 
             <!-- Name -->

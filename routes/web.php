@@ -63,10 +63,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
     Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
-    // Profile routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Account routes (email, password, delete account)
+    Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
+    Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');
+    Route::delete('/account', [ProfileController::class, 'destroy'])->name('account.destroy');
 });
 
 // Staff Routes

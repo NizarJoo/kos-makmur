@@ -52,10 +52,10 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'guest_id');
     }
 
-    // public function profile()
-    // {
-    //     return $this->hasOne(UserProfile::class);
-    // }
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 
     public function kos()
     {
