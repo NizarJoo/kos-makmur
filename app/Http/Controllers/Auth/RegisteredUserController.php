@@ -57,7 +57,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('profile.create');
+        return redirect()->route('dashboard');
     }
 
     public function createOwner()
@@ -84,6 +84,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('profile.create');
     }
 }

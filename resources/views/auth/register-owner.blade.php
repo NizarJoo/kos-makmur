@@ -88,12 +88,6 @@
                     class="w-full inline-flex justify-center p-4 text-base font-semibold text-luxury-600 dark:text-luxury-400 border-2 border-luxury-300 dark:border-luxury-600 rounded-lg hover:bg-luxury-50 dark:hover:bg-luxury-900/50 transition-colors duration-200">
                     Masuk
                 </a>
-
-                <!-- Register as Kos Owner (role admin) -->
-                <a href="{{ route('register.owner') }}"
-                    class="w-full inline-flex justify-center p-4 text-base font-semibold text-accent-700 dark:text-accent-300 border-2 border-accent-300 dark:border-accent-700 rounded-lg hover:bg-accent-50 dark:hover:bg-accent-900/40 transition-colors duration-200">
-                    Daftar sebagai Pemilik Kos
-                </a>
             </div>
 
         </form>

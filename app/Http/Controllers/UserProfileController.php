@@ -2,97 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class UserProfileController extends Controller
 {
-    public function create()
+    /**
+     * Show the form for creating first time profile.
+     */
+    public function create(): View
     {
-        // jika sudah punya profil yang lengkap, redirect ke dashboard
-        $user = Auth::user();
-        if ($user->profile && $this->isProfileComplete($user->profile)) {
-            return redirect()->route('dashboard');
-        }
-
         return view('profile.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Store first time profile data.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:1000',
-            'profile_picture' => 'nullable|image|max:2048',
+        $validated = $request->validate([
+            'full_name'      => ['required', 'string', 'max:255'],
+            'phone'          => ['required', 'string', 'max:20'],
+            'address'        => ['required', 'string'],
+            'birth_date'     => ['required', 'date'],
+            'gender'         => ['required', 'in:male,female,other'],
+            'profile_picture'=> ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
         ]);
 
         $user = Auth::user();
 
-        // handle file upload
-        $picturePath = null;
+        // Upload foto
         if ($request->hasFile('profile_picture')) {
-            $picturePath = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $validated['profile_picture'] = 
+                $request->file('profile_picture')->store('profile-pictures', 'public');
         }
 
-        $user->profile()->create([
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'profile_picture' => $picturePath,
-        ]);
+        // Buat profil
+        $user->profile()->create($validated);
 
-        return redirect()->route('dashboard')->with('success', 'Profil berhasil disimpan.');
+        return redirect()->route('dashboard')->with('status', 'Profil berhasil dibuat!');
     }
 
-    public function edit()
+    /**
+     * Show the form for editing biodata profile.
+     */
+    public function edit(): View
     {
-        $profile = Auth::user()->profile;
-        return view('profile.edit', compact('profile'));
+        $user = Auth::user();
+        $profile = $user->profile;
+
+        return view('profile.index', compact('profile'));
     }
 
-    public function update(Request $request)
+    /**
+     * Update biodata profile.
+     */
+    public function update(Request $request): RedirectResponse
     {
-        $request->validate([
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:1000',
-            'profile_picture' => 'nullable|image|max:2048',
+        $validated = $request->validate([
+            'full_name'      => ['required', 'string', 'max:255'],
+            'phone'          => ['required', 'string', 'max:20'],
+            'address'        => ['required', 'string'],
+            'birth_date'     => ['required', 'date'],
+            'gender'         => ['required', 'in:male,female,other'],
+            'profile_picture'=> ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
         ]);
 
         $user = Auth::user();
         $profile = $user->profile;
 
-        // handle file replace
+        // Upload foto baru
         if ($request->hasFile('profile_picture')) {
-            // hapus file lama kalau ada
+
+            // Hapus jika ada foto lama
             if ($profile && $profile->profile_picture) {
                 Storage::disk('public')->delete($profile->profile_picture);
             }
-            $profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
-        } else {
-            $profile_picture = $profile->profile_picture ?? null;
+
+            $validated['profile_picture'] =
+                $request->file('profile_picture')->store('profile-pictures', 'public');
         }
 
-        if ($profile) {
-            $profile->update([
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'profile_picture' => $profile_picture,
-            ]);
-        } else {
-            $user->profile()->create([
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'profile_picture' => $profile_picture,
-            ]);
-        }
+        // Update
+        $profile->update($validated);
 
-        return redirect()->route('dashboard')->with('success', 'Profil diperbarui.');
-    }
-
-    // helper lokal: apa sudah lengkap (atur sesuai kebutuhan)
-    protected function isProfileComplete($profile): bool
-    {
-        return $profile && $profile->phone && $profile->address;
+        return redirect()->route('profile.edit')->with('status', 'Profil berhasil diperbarui!');
     }
 }

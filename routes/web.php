@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\GuestBookingController;
-use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\FacilityController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuestBookingController;
 
 // Public routes
 Route::get('/', function () {
@@ -63,10 +64,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
     Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
+    // Profile Biodata routes
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
     // Account routes (email, password, delete account)
-    Route::get('/account', [ProfileController::class, 'edit'])->name('account.edit');
-    Route::patch('/account', [ProfileController::class, 'update'])->name('account.update');
-    Route::delete('/account', [ProfileController::class, 'destroy'])->name('account.destroy');
+    Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+    Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
+    Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 });
 
 // Staff Routes
