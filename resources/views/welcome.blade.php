@@ -150,24 +150,24 @@
                                         <h1 class="font-serif text-2xl font-bold text-luxury-800 dark:text-luxury-200">
                                             {{ config('app.name') }}
                                         </h1>
-                                        <p class="text-sm text-luxury-600 dark:text-luxury-400">Luxury Hotel & Resort
+                                        <p class="text-sm text-luxury-600 dark:text-luxury-400">Papikos Malang
                                         </p>
                                     </div>
                                 </div>
 
                                 <!-- Center Navigation -->
                                 <div class="hidden md:flex items-center space-x-8">
-                                    <a href="#rooms"
+                                    <a href="#kospilihan"
                                         class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-800 dark:hover:text-luxury-200 font-medium transition-colors">
-                                        Rooms
+                                        Kos Pilihan
                                     </a>
-                                    <a href="#amenities"
+                                    <a href="#tetangkami"
                                         class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-800 dark:hover:text-luxury-200 font-medium transition-colors">
-                                        Amenities
+                                        Tentang Kami
                                     </a>
-                                    <a href="#contact"
+                                    <a href="#kontak"
                                         class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-800 dark:hover:text-luxury-200 font-medium transition-colors">
-                                        Contact
+                                        Kontak
                                     </a>
                                 </div>
 
@@ -183,13 +183,13 @@
                                         @else
                                             <a href="{{ route('login') }}"
                                                 class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-800 dark:hover:text-luxury-200 font-medium transition-colors">
-                                                Sign In
+                                                Masuk
                                             </a>
 
                                             @if (Route::has('register'))
                                                 <a href="{{ route('guest.booking.create') }}"
                                                     class="inline-flex items-center px-4 py-2 bg-luxury-800 dark:bg-luxury-700 text-white font-medium rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
-                                                    <span>Book Now</span>
+                                                    <span>Cari Kos</span>
                                                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                             d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -241,14 +241,13 @@
                             <div class="space-y-6">
                                 <h2
                                     class="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-luxury-800 dark:text-luxury-200 leading-tight">
-                                    Experience<br>
-                                    Refined Living
+                                    Kos<br>
+                                    Mewah Murah
                                 </h2>
                                 <p class="text-xl text-luxury-600 dark:text-luxury-400 max-w-xl leading-relaxed">
-                                    Welcome to {{ config('app.name') }}, where exceptional service meets unparalleled
-                                    comfort.
+                                    Selamat datang di {{ config('app.name') }}, penyedia kos mewah murah di Kota Malang.
                                     @if ($availableRooms ?? 0 > 0)
-                                        We currently have {{ $availableRooms }} rooms available for your perfect stay.
+                                        Saat ini kami menyediakan {{ $availableRooms }} kos yang siap dihuni.
                                     @endif
                                 </p>
                             </div>
@@ -266,7 +265,7 @@
                                 @else
                                     <a href="{{ route('register') }}"
                                         class="inline-flex items-center px-8 py-3 bg-luxury-800 dark:bg-luxury-700 text-white font-semibold rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
-                                        <span>Book Now</span>
+                                        <span>Cari Kos</span>
                                         <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -274,7 +273,7 @@
                                     </a>
                                     <a href="{{ route('login') }}"
                                         class="inline-flex items-center px-8 py-3 bg-white dark:bg-gray-800 text-luxury-800 dark:text-luxury-200 font-semibold rounded-lg hover:bg-luxury-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
-                                        Sign In
+                                        Masuk
                                     </a>
                                 @endauth
                             </div>
@@ -288,14 +287,14 @@
                                     <div class="text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-2">
                                         {{ $stats['roomCount'] ?? 0 }}+
                                     </div>
-                                    <p class="text-luxury-600 dark:text-luxury-400">Luxury Rooms</p>
+                                    <p class="text-luxury-600 dark:text-luxury-400">Kost</p>
                                 </div>
                                 <div
                                     class="bg-white/90 dark:bg-gray-800/90 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                                     <div class="text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-2">
                                         {{ $stats['guestCount'] ?? 0 }}+
                                     </div>
-                                    <p class="text-luxury-600 dark:text-luxury-400">Happy Guests</p>
+                                    <p class="text-luxury-600 dark:text-luxury-400">Kecamatan</p>
                                 </div>
                             @endif
                         </div>
@@ -306,14 +305,14 @@
 
         <!-- Room Types Section -->
         @if ($roomTypes ?? null)
-            <section class="relative py-20 bg-white dark:bg-gray-800">
+            <section class="relative py-20 bg-white dark:bg-gray-800" id="kospilihan">
                 <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
                     <div class="text-center mb-16">
                         <h2 class="font-serif text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-4">
-                            Our Room Types
+                            Kos Pilihan
                         </h2>
                         <p class="text-luxury-600 dark:text-luxury-400 max-w-2xl mx-auto">
-                            Choose from our selection of meticulously designed rooms
+                            Beberapa kos pilihan yang kami sediakan untuk Anda.
                         </p>
                     </div>
 
@@ -333,9 +332,9 @@
                                     </p>
                                     <div class="flex justify-between items-center">
                                         <span class="text-2xl font-bold text-luxury-800 dark:text-luxury-200">
-                                            ${{ number_format($type['price'], 2) }}
+                                            Rp{{ $type['price'] }}
                                         </span>
-                                        <span class="text-sm text-luxury-600 dark:text-luxury-400">per night</span>
+                                        <span class="text-sm text-luxury-600 dark:text-luxury-400">per bulan</span>
                                     </div>
                                 </div>
                             </div>
@@ -346,15 +345,14 @@
         @endif
 
         <!-- Features Section -->
-        <section class="relative py-20 bg-white dark:bg-gray-800 clip-diagonal">
+        <section class="relative py-20 bg-white dark:bg-gray-800 clip-diagonal" id="tetangkami">
             <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
                 <div class="text-center mb-16">
                     <h2 class="font-serif text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-4">
-                        Why Choose {{ config('app.name') }}
+                        Mengapa Memilih {{ config('app.name') }}
                     </h2>
                     <p class="text-luxury-600 dark:text-luxury-400 max-w-2xl mx-auto">
-                        Immerse yourself in a world of sophistication and comfort, where every detail is crafted to
-                        perfection.
+                        Rasakan pengalaman tinggal yang nyaman dan tertata, di mana setiap detail disiapkan dengan maksimal demi kenyamanan penghuni.
                     </p>
                 </div>
 
@@ -368,9 +366,10 @@
                                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Luxurious Rooms</h3>
-                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">Experience comfort in our
-                            meticulously designed rooms.</p>
+                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Kamar Nyaman</h3>
+                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">
+                            Nikmati kenyamanan di kamar kos yang bersih, rapi, dan dirancang untuk kebutuhan harian Anda.
+                        </p>
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
@@ -381,10 +380,10 @@
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Best Rates</h3>
-                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">Competitive prices for an
-                            unforgettable
-                            stay.</p>
+                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Harga Terjangkau</h3>
+                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">
+                            Dapatkan kos berkualitas dengan harga bersaing yang ramah di kantong.
+                        </p>
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
@@ -395,10 +394,9 @@
                                     d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Premium Service
-                        </h3>
-                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">Dedicated staff to cater to
-                            your every need.
+                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Pelayanan Terbaik</h3>
+                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">
+                            Pengelola kos yang responsif dan siap membantu berbagai kebutuhan penghuni.
                         </p>
                     </div>
 
@@ -410,15 +408,16 @@
                                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Secure Booking</h3>
-                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">Safe and easy reservation
-                            process.</p>
+                        <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-3">Pemesanan Aman</h3>
+                        <p class="text-luxury-600 dark:text-luxury-400 leading-relaxed">
+                            Proses booking kos yang mudah, cepat, dan aman.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Amenities Section -->
+        {{-- <!-- Amenities Section -->
         <section class="relative py-20 bg-luxury-50 dark:bg-gray-900">
             <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
                 <div class="grid lg:grid-cols-2 gap-16 items-center">
@@ -469,46 +468,50 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <!-- Footer -->
-        <footer class="bg-luxury-800 dark:bg-gray-900 text-white py-12">
+        <footer class="bg-luxury-800 dark:bg-gray-900 text-white py-12" id="kontak">
             <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
                 <div class="grid md:grid-cols-3 gap-12">
                     <div>
                         <h3 class="font-serif text-2xl font-bold mb-4">{{ config('app.name') }}</h3>
                         <p class="text-luxury-200 dark:text-luxury-400">
-                            Where luxury meets comfort, creating unforgettable experiences.
+                            Tempat kenyamanan dan kemudahan bertemu, menghadirkan pengalaman tinggal terbaik bagi penghuni kos.
                         </p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                        <h4 class="font-semibold text-lg mb-4">Tautan Cepat</h4>
                         <ul class="space-y-2">
                             <li><a href="#"
-                                    class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">About
-                                    Us</a></li>
+                                class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">
+                                Tentang Kami
+                            </a></li>
                             <li><a href="#"
-                                    class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">Rooms</a>
-                            </li>
+                                class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">
+                                Daftar Kos
+                            </a></li>
                             <li><a href="#"
-                                    class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">Contact</a>
-                            </li>
+                                class="text-luxury-200 dark:text-luxury-400 hover:text-white transition-colors">
+                                Kontak
+                            </a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg mb-4">Contact Us</h4>
+                        <h4 class="font-semibold text-lg mb-4">Hubungi Kami</h4>
                         <ul class="space-y-2 text-luxury-200 dark:text-luxury-400">
-                            <li>1234 Luxury Avenue</li>
-                            <li>New York, NY 10001</li>
-                            <li>+1 (555) 123-4567</li>
+                            <li>Kota Malang, Jawa Timur</li>
+                            <li>Indonesia</li>
+                            <li>+62 812-3456-7890</li>
                         </ul>
                     </div>
                 </div>
                 <div class="border-t border-luxury-700 mt-8 pt-8 text-center text-luxury-200 dark:text-luxury-400">
-                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. Hak cipta dilindungi.</p>
                 </div>
             </div>
         </footer>
+
     </div>
 
     <!-- Mobile Menu -->
@@ -544,17 +547,17 @@
             <div class="flex-1 overflow-y-auto p-6">
                 <nav class="space-y-1">
                     <!-- Navigation Links -->
-                    <a href="#rooms"
+                    <a href="#kospilihan"
                         class="block px-4 py-3 text-lg text-luxury-800 dark:text-luxury-200 hover:bg-luxury-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                        Rooms
+                        Kost Pilihan
                     </a>
-                    <a href="#amenities"
+                    <a href="#tentangkami"
                         class="block px-4 py-3 text-lg text-luxury-800 dark:text-luxury-200 hover:bg-luxury-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                        Amenities
+                        Tentang Kami
                     </a>
-                    <a href="#contact"
+                    <a href="#kontak"
                         class="block px-4 py-3 text-lg text-luxury-800 dark:text-luxury-200 hover:bg-luxury-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                        Contact
+                        Kontak
                     </a>
 
                     <!-- Divider -->
@@ -569,13 +572,13 @@
                     @else
                         <a href="{{ route('login') }}"
                             class="block px-4 py-3 text-lg text-luxury-800 dark:text-luxury-200 hover:bg-luxury-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                            Sign In
+                            Masuk
                         </a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('guest.booking.create') }}"
                                 class="block px-4 py-3 mx-4 mt-2 bg-luxury-800 dark:bg-luxury-700 text-white text-center font-semibold rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
-                                Book Now
+                                Cari Kos
                             </a>
                         @endif
                     @endauth

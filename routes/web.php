@@ -24,21 +24,21 @@ Route::get('/', function () {
 
     $roomTypes = [
         [
-            'name' => 'Deluxe Room',
-            'description' => 'Spacious room with city view',
-            'price' => Room::where('capacity', 2)->value('price_per_night') ?? 100.00,
+            'name' => 'Kos Avenger',
+            'description' => 'Kos nyaman untuk 1 keluarga',
+            'price' => Room::where('capacity', 2)->value('price_per_night') ?? 1000,
             'image' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
         [
-            'name' => 'Premium Suite',
-            'description' => 'Luxury suite with panoramic view',
-            'price' => Room::where('capacity', 3)->value('price_per_night') ?? 150.00,
+            'name' => 'Kos Muslimah Ambarawa',
+            'description' => 'Kos ekslusif mahasiswi sultan',
+            'price' => Room::where('capacity', 3)->value('price_per_night') ?? 550,
             'image' => 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
         [
-            'name' => 'Royal Suite',
-            'description' => 'Ultimate luxury experience',
-            'price' => Room::where('capacity', 4)->value('price_per_night') ?? 200.00,
+            'name' => 'Kos Syahdana',
+            'description' => 'Kos strategis dekat kampus UM',
+            'price' => Room::where('capacity', 4)->value('price_per_night') ?? 100,
             'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
     ];
