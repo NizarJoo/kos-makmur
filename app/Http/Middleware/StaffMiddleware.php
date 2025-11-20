@@ -27,9 +27,9 @@ class StaffMiddleware
 
         // If specific role is required
         if ($role) {
+            // Check if user has the specific role
             if ($user->role !== $role) {
-                return redirect()->route('dashboard')
-                    ->with('error', 'You do not have permission to access this area.');
+                abort(403, 'Unauthorized access.');
             }
             return $next($request);
         }

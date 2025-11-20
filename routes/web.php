@@ -8,11 +8,17 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GuestBookingController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\BoardingHouseController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
     $stats = [
         'roomCount' => Room::count(),
@@ -45,51 +51,72 @@ Route::get('/', function () {
     return view('welcome', compact('stats', 'availableRooms', 'roomTypes'));
 });
 
-// Guest Booking Routes
+// Guest Booking Routes (Public)
 Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
 Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
-// Guest Routes (authenticated users)
+/*
+|--------------------------------------------------------------------------
+| Authenticated User Routes (Regular Users/Guests)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Guest Dashboard
+    // Dashboard redirect logic
     Route::get('/dashboard', function () {
-        if (auth()->user()->is_staff) {
+        if (auth()->user()->isStaff()) {
             return redirect()->route('staff.dashboard');
         }
         return view('guest.dashboard');
     })->name('dashboard');
 
+    // Guest Bookings
     Route::get('/my-bookings', [GuestBookingController::class, 'index'])->name('guest.bookings');
-    Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
-    Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
-    // Profile routes
+    // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Staff Routes
+/*
+|--------------------------------------------------------------------------
+| Superadmin Routes (Superadmin Only)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
+    // Master Data - Districts
+    Route::resource('districts', DistrictController::class)->except(['show']);
+
+    // Master Data - Facilities
+    Route::resource('facilities', FacilityController::class)->except(['show']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Admin/Boarding House Owner Only)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'verified', 'staff'])->group(function () {
+    // Admin Dashboard
     Route::get('/staff/dashboard', [DashboardController::class, 'index'])->name('staff.dashboard');
 
+    // Boarding Houses Management (Policy handles admin-only access)
+    Route::resource('boarding-houses', BoardingHouseController::class);
+
+    // Legacy Routes (Old Hotel Management System)
     Route::resource('rooms', RoomController::class);
     Route::resource('guests', GuestController::class);
     Route::resource('bookings', BookingController::class);
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 });
 
-// Superadmin Routes
-Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
-    // Master Data - Districts
-    Route::resource('districts', DistrictController::class)->except(['show']);
-});
-Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
-    // Master Data - Districts
-    Route::resource('districts', DistrictController::class)->except(['show']);
-
-    // Master Data - Fasilitas
-    Route::resource('facilities', FacilityController::class)->except(['show']);
-});
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__ . '/auth.php';

@@ -37,9 +37,13 @@
                             </x-nav-link>
                         @endif
 
-                        <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.*')">
-                            {{ __('Rooms') }}
-                        </x-nav-link>
+                        {{-- Menu untuk Admin --}}
+                        @if (auth()->user()->isAdmin())
+                            <x-nav-link :href="route('boarding-houses.index')" :active="request()->routeIs('boarding-houses.*')">
+                                {{ __('Boarding Houses') }}
+                            </x-nav-link>
+                        @endif
+
                         <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
                             {{ __('Bookings') }}
                         </x-nav-link>
@@ -135,10 +139,10 @@
                 {{-- Menu untuk Superadmin --}}
                 @if (auth()->user()->isSuperadmin())
                     <x-responsive-nav-link :href="route('districts.index')" :active="request()->routeIs('districts.*')">
-                        {{ __('Kecamatan') }}
+                        {{ __('Districts') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('fasilitas.*')">
-                        {{ __('Fasilitas') }}
+                    <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
+                        {{ __('Facilities') }}
                     </x-responsive-nav-link>
                 @endif
 
