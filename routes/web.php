@@ -86,12 +86,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+
 Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
     // Master Data - Districts
     Route::resource('districts', DistrictController::class)->except(['show']);
 
     // Master Data - Facilities
     Route::resource('facilities', FacilityController::class)->except(['show']);
+
+    // Admin Approvals
+    Route::get('/superadmin/approvals', [\App\Http\Controllers\SuperadminController::class, 'index'])->name('superadmin.approvals');
+    Route::post('/superadmin/approvals/{user}/approve', [\App\Http\Controllers\SuperadminController::class, 'approve'])->name('superadmin.approvals.approve');
+    Route::post('/superadmin/approvals/{user}/reject', [\App\Http\Controllers\SuperadminController::class, 'reject'])->name('superadmin.approvals.reject');
 });
 
 /*
@@ -127,6 +133,7 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -144,6 +151,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{boardingHouse}/approve', [VerificationController::class, 'approve'])->name('approve');
         Route::post('/{boardingHouse}/reject', [VerificationController::class, 'reject'])->name('reject');
     });
+});
+// Hanya superadmin yang boleh melihat halaman ini
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+
+    Route::get('/verified', [\App\Http\Controllers\VerifiedController::class, 'index'])
+        ->name('verified.index');
+
+    Route::post('/verified/{kos}/accept', [\App\Http\Controllers\VerifiedController::class, 'accept'])
+        ->name('verified.accept');
+
+    Route::post('/verified/{kos}/reject', [\App\Http\Controllers\VerifiedController::class, 'reject'])
+        ->name('verified.reject');
 });
 
 require __DIR__ . '/auth.php';
