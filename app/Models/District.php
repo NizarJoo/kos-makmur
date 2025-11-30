@@ -21,8 +21,8 @@ class District extends Model
     /**
      * Get all kos in this district.
      */
-    public function kos()
+    public function boardingHouses()  // ← Ubah dari 'kos()'
     {
-        return $this->hasMany(Kos::class);
+        return $this->hasMany(BoardingHouse::class, 'district_id');
     }
 }

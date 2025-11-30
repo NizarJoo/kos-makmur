@@ -13,7 +13,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $districts = District::withCount('kos')
+        $districts = District::withCount('boardingHouses')  // ← Ubah dari 'kos'
             ->orderBy('name')
             ->paginate(15);
 
@@ -65,8 +65,8 @@ class DistrictController extends Controller
      */
     public function destroy(District $district)
     {
-        // Check if district has any kos
-        if ($district->kos()->exists()) {
+        // Check if district has any boarding houses
+        if ($district->boardingHouses()->exists()) {  // ← Ubah dari 'kos()'
             return redirect()
                 ->route('districts.index')
                 ->with('error', 'Tidak dapat menghapus kecamatan yang memiliki data kos.');

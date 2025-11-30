@@ -25,7 +25,7 @@
                             <svg class="w-6 h-6 text-luxury-700 dark:text-gold-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2      2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                     <h3 class="text-lg font-serif font-semibold text-luxury-800 dark:text-gold-300 mb-4">Quick Actions
                     </h3>
                     <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-                        <a href="{{ route('rooms.create') }}"
+                        <a href=""
                             class="flex items-center p-3 bg-gradient-to-br from-luxury-50/50 to-white/30 dark:from-gray-800/50 dark:to-gray-900/30 rounded-lg border border-luxury-200/20 dark:border-gold-500/10 hover:bg-luxury-100/50 dark:hover:bg-gold-900/20 transition-colors group">
                             <div
                                 class="p-2 bg-gradient-to-br from-luxury-100 to-white dark:from-gold-900/20 dark:to-gray-800/20 rounded-full mr-3 group-hover:from-luxury-200 dark:group-hover:from-gold-800/30">
