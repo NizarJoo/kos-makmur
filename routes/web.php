@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\GuestBookingController;
+use App\Http\Controllers\GuestPageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\BoardingHouseController;
+use App\Models\BoardingHouse;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
@@ -92,10 +96,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return redirect()->route('staff.dashboard');
 
         }
-
-        return view('guest.dashboard');
+        
+        $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(6)->get();
+        return view('guest.dashboard', compact('boardingHouses'));
 
     })->name('dashboard');
+
+    // Guest-facing Boarding House List
+    Route::get('/kos', [GuestPageController::class, 'index'])->name('guest.boarding-houses.index');
+    Route::get('/kos/{boarding_house}', [GuestPageController::class, 'show'])->name('guest.boarding-houses.show');
 
 
 
@@ -112,6 +121,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
+    // Profile Management
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+    // Account Settings
+    Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+    Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
+    Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
+});
+
+/*
         // Profile Management
 
 
@@ -158,6 +178,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
+
 Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
 
     // Master Data - Districts
@@ -169,6 +190,11 @@ Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
     // Master Data - Facilities
 
     Route::resource('facilities', FacilityController::class)->except(['show']);
+
+    // Admin Approvals
+    Route::get('/superadmin/approvals', [\App\Http\Controllers\SuperadminController::class, 'index'])->name('superadmin.approvals');
+    Route::post('/superadmin/approvals/{user}/approve', [\App\Http\Controllers\SuperadminController::class, 'approve'])->name('superadmin.approvals.approve');
+    Route::post('/superadmin/approvals/{user}/reject', [\App\Http\Controllers\SuperadminController::class, 'reject'])->name('superadmin.approvals.reject');
 
 });
 
@@ -241,6 +267,7 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 
 
 
+
 /*
 
 |--------------------------------------------------------------------------
@@ -251,4 +278,30 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 
 */
 
+// Route untuk Rooms
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('verification')->name('verification.')->group(function () {
+        Route::get('/', [VerificationController::class, 'index'])->name('index');
+        Route::get('/{boardingHouse}', [VerificationController::class, 'show'])->name('show');
+        Route::post('/{boardingHouse}/approve', [VerificationController::class, 'approve'])->name('approve');
+        Route::post('/{boardingHouse}/reject', [VerificationController::class, 'reject'])->name('reject');
+    });
+});
+// Hanya superadmin yang boleh melihat halaman ini
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+
+    Route::get('/verified', [\App\Http\Controllers\VerifiedController::class, 'index'])
+        ->name('verified.index');
+
+    Route::post('/verified/{kos}/accept', [\App\Http\Controllers\VerifiedController::class, 'accept'])
+        ->name('verified.accept');
+
+    Route::post('/verified/{kos}/reject', [\App\Http\Controllers\VerifiedController::class, 'reject'])
+        ->name('verified.reject');
+});
+
 require __DIR__ . '/auth.php';
+

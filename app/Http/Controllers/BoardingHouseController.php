@@ -31,7 +31,7 @@ class BoardingHouseController extends Controller
             ->ownedBy(auth()->id())
             ->withCount('rooms')
             ->latest()
-            ->paginate(10);
+            ->paginate(9);
 
         return view('boarding-houses.index', compact('boardingHouses'));
     }
