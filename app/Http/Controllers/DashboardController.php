@@ -67,4 +67,15 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('stats', 'recentBookings'));
     }
+    public function dashboard()
+{
+    // Load relasi room dengan eager loading
+    $bookings = auth()->user()->bookings()
+        ->with('room') // TAMBAHKAN INI
+        ->latest()
+        ->take(5)
+        ->get();
+    
+    return view('guest.dashboard', compact('bookings'));
+}
 }
