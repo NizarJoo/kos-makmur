@@ -98,7 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         }
         
         $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(6)->get();
-        return view('guest.dashboard', compact('boardingHouses'));
+        return view('guest.dashboard_new', compact('boardingHouses'));
 
     })->name('dashboard');
 
