@@ -86,12 +86,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+
 Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
     // Master Data - Districts
     Route::resource('districts', DistrictController::class)->except(['show']);
 
     // Master Data - Facilities
     Route::resource('facilities', FacilityController::class)->except(['show']);
+
+    // Admin Approvals
+    Route::get('/superadmin/approvals', [\App\Http\Controllers\SuperadminController::class, 'index'])->name('superadmin.approvals');
+    Route::post('/superadmin/approvals/{user}/approve', [\App\Http\Controllers\SuperadminController::class, 'approve'])->name('superadmin.approvals.approve');
+    Route::post('/superadmin/approvals/{user}/reject', [\App\Http\Controllers\SuperadminController::class, 'reject'])->name('superadmin.approvals.reject');
 });
 
 /*
