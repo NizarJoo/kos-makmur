@@ -38,6 +38,9 @@
                             <x-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
                                 {{ __('Verifikasi Kos') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('superadmin.approvals')" :active="request()->routeIs('superadmin.approvals')">
+                                {{ __('Admin Approvals') }}
+                            </x-nav-link>
                         @endif
 
                         {{-- Menu untuk Admin --}}
@@ -153,6 +156,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
                         {{ __('Verifikasi Kos') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('superadmin.approvals')" :active="request()->routeIs('superadmin.approvals')">
+                        {{ __('Admin Approvals') }}
                     </x-responsive-nav-link>
                 @endif
 

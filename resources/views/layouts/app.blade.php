@@ -107,6 +107,9 @@
 
             <!-- Page Content -->
             <main class="@if (!isset($header)) pt-20 @endif">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <x-alert />
+                </div>
                 {{ $slot }}
             </main>
         </div>
