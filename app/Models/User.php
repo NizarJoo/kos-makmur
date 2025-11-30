@@ -57,9 +57,9 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
-    public function kos()
+    public function boardingHouses()
     {
-        return $this->hasMany(Kos::class, 'admin_id');
+        return $this->hasMany(BoardingHouse::class, 'admin_id');
     }
 
     /**
