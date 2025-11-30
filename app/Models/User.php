@@ -82,7 +82,6 @@ class User extends Authenticatable
 
     /**
      * Check if user is staff (admin or superadmin)
-     * Untuk backward compatibility dengan is_staff
      */
     public function isStaff(): bool
     {

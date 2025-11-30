@@ -55,21 +55,46 @@ Route::get('/', function () {
     return view('welcome', compact('stats', 'availableRooms', 'roomTypes'));
 });
 
+
+
 // Guest Booking Routes (Public)
-Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
-Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
+
+Route::get('/book-now', [BookingController::class, 'create'])->name('booking.create');
+
+Route::post('/book-now', [BookingController::class, 'store'])->name('booking.store');
+
+
+
+// Route untuk Rooms
+
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+
+Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+
+
 
 /*
+
 |--------------------------------------------------------------------------
+
 | Authenticated User Routes (Regular Users/Guests)
+
 |--------------------------------------------------------------------------
+
 */
 
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
+
     // Dashboard redirect logic
+
     Route::get('/dashboard', function () {
+
         if (auth()->user()->isStaff()) {
+
             return redirect()->route('staff.dashboard');
+
         }
         
         $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(6)->get();
@@ -81,8 +106,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/kos', [GuestPageController::class, 'index'])->name('guest.boarding-houses.index');
     Route::get('/kos/{boarding_house}', [GuestPageController::class, 'show'])->name('guest.boarding-houses.show');
 
-    // Guest Bookings
-    Route::get('/my-bookings', [GuestBookingController::class, 'index'])->name('guest.bookings');
+
+
+        // Guest Bookings
+
+
+
+        Route::get('/my-bookings', [BookingController::class, 'index'])->name('booking.index');
+
+
+
+        Route::get('/my-bookings/{booking}', [BookingController::class, 'show'])->name('guest.bookings.show');
+        Route::put('/my-bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('guest.bookings.cancel');
+
+
 
     // Profile Management
     Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
@@ -95,63 +132,150 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 /*
+        // Profile Management
+
+
+
+        Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+
+
+
+        Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+
+
+        Route::delete('/profile', [UserProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+
+    // Verification Routes
+
+    Route::prefix('verification')->name('verification.')->group(function () {
+
+        Route::get('/', [VerificationController::class, 'index'])->name('index');
+
+        Route::get('/{boardingHouse}', [VerificationController::class, 'show'])->name('show');
+
+        Route::post('/{boardingHouse}/approve', [VerificationController::class, 'approve'])->name('approve');
+
+        Route::post('/{boardingHouse}/reject', [VerificationController::class, 'reject'])->name('reject');
+
+    });
+
+});
+
+
+
+/*
+
 |--------------------------------------------------------------------------
+
 | Superadmin Routes (Superadmin Only)
+
 |--------------------------------------------------------------------------
+
 */
 
 
+
+
 Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
+
     // Master Data - Districts
+
     Route::resource('districts', DistrictController::class)->except(['show']);
 
+
+
     // Master Data - Facilities
+
     Route::resource('facilities', FacilityController::class)->except(['show']);
 
     // Admin Approvals
     Route::get('/superadmin/approvals', [\App\Http\Controllers\SuperadminController::class, 'index'])->name('superadmin.approvals');
     Route::post('/superadmin/approvals/{user}/approve', [\App\Http\Controllers\SuperadminController::class, 'approve'])->name('superadmin.approvals.approve');
     Route::post('/superadmin/approvals/{user}/reject', [\App\Http\Controllers\SuperadminController::class, 'reject'])->name('superadmin.approvals.reject');
+
 });
 
+
+
 /*
+
 |--------------------------------------------------------------------------
+
 | Admin Routes (Admin/Boarding House Owner Only)
+
 |--------------------------------------------------------------------------
+
 */
 
+
+
 Route::middleware(['auth', 'verified', 'staff'])->group(function () {
+
     // Admin Dashboard
+
     Route::get('/staff/dashboard', [DashboardController::class, 'index'])->name('staff.dashboard');
 
+
+
     // Boarding Houses Management (Policy handles admin-only access)
+
     Route::resource('boarding-houses', BoardingHouseController::class);
 
+
+
     // Nested Rooms Management (inside boarding house)
+
     Route::prefix('boarding-houses/{boarding_house}')->name('boarding-houses.')->group(function () {
+
         Route::resource('rooms', RoomController::class)->except(['index', 'show']);
+
     });
 
+
+
     // Legacy Routes (Old Hotel Management System)
+
     Route::resource('rooms', RoomController::class)->names([
+
         'index' => 'legacy.rooms.index',
+
         'create' => 'legacy.rooms.create',
+
         'store' => 'legacy.rooms.store',
+
         'show' => 'legacy.rooms.show',
+
         'edit' => 'legacy.rooms.edit',
+
         'update' => 'legacy.rooms.update',
+
         'destroy' => 'legacy.rooms.destroy',
+
     ]);
+
     Route::resource('guests', GuestController::class);
-    Route::resource('bookings', BookingController::class);
+
+    Route::resource('bookings', BookingController::class)->except(['create', 'store']);
+
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
+    Route::get('/bookings/get-available-rooms/{boardingHouseId}', [BookingController::class, 'getAvailableRooms'])->name('bookings.get_available_rooms');
+
 });
 
 
+
+
 /*
+
 |--------------------------------------------------------------------------
+
 | Authentication Routes
+
 |--------------------------------------------------------------------------
+
 */
 
 // Route untuk Rooms
@@ -180,3 +304,4 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
