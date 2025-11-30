@@ -14,15 +14,22 @@ class SuperadminSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'name' => 'Admin',
+            'email' => 'admin@ekost.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+        User::create([
             'name' => 'Super Administrator',
             'email' => 'superadmin@ekost.com',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);
-
         $this->command->info('Superadmin created successfully!');
         $this->command->info('Email: superadmin@ekost.com');
+        $this->command->info('Email: admin@ekost.com');
         $this->command->info('Password: password');
     }
 }

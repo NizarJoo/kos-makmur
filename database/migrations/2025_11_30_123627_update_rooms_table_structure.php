@@ -20,16 +20,16 @@ return new class extends Migration {
             ]);
         });
 
-        Schema::table('rooms', function (Blueprint $table) {
-            // Tambah columns baru sesuai sistem kost
-            $table->foreignId('boarding_house_id')->constrained()->onDelete('cascade');
-            $table->string('type_name', 100);
-            $table->decimal('price_per_month', 10, 2);
-            $table->integer('availability'); // total units
-            $table->integer('available_units')->default(0); // units yang masih kosong
-            $table->string('size', 50)->nullable();
-            $table->string('image_path')->nullable();
-        });
+        // Schema::table('rooms', function (Blueprint $table) {
+        //     // Tambah columns baru sesuai sistem kost
+        //     // $table->foreignId('boarding_house_id')->constrained()->onDelete('cascade');
+        //     // $table->string('type_name', 100);
+        //     // $table->decimal('price_per_month', 10, 2);
+        //     // $table->integer('availability'); // total units
+        //     // $table->integer('available_units')->default(0); // units yang masih kosong
+        //     // $table->string('size', 50)->nullable();
+        //     // $table->string('image_path')->nullable();
+        // });
     }
 
     public function down(): void

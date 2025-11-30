@@ -12,6 +12,7 @@ use App\Http\Controllers\BoardingHouseController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,15 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 // Route untuk Rooms
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('verification')->name('verification.')->group(function () {
+        Route::get('/', [VerificationController::class, 'index'])->name('index');
+        Route::get('/{boardingHouse}', [VerificationController::class, 'show'])->name('show');
+        Route::post('/{boardingHouse}/approve', [VerificationController::class, 'approve'])->name('approve');
+        Route::post('/{boardingHouse}/reject', [VerificationController::class, 'reject'])->name('reject');
+    });
+});
 // Hanya superadmin yang boleh melihat halaman ini
 Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
