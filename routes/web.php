@@ -9,18 +9,11 @@ use App\Http\Controllers\GuestBookingController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\BoardingHouseController;
+use App\Http\Controllers\AccountController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\BookingController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\FacilityController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GuestBookingController;
 
 /*
 |--------------------------------------------------------------------------
