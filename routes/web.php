@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GuestBookingController;
+use App\Http\Controllers\GuestPageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\BoardingHouseController;
+use App\Models\BoardingHouse;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
@@ -68,16 +71,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (auth()->user()->isStaff()) {
             return redirect()->route('staff.dashboard');
         }
-        return view('guest.dashboard');
+        
+        $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(6)->get();
+        return view('guest.dashboard', compact('boardingHouses'));
+
     })->name('dashboard');
+
+    // Guest-facing Boarding House List
+    Route::get('/kos', [GuestPageController::class, 'index'])->name('guest.boarding-houses.index');
+    Route::get('/kos/{boarding_house}', [GuestPageController::class, 'show'])->name('guest.boarding-houses.show');
 
     // Guest Bookings
     Route::get('/my-bookings', [GuestBookingController::class, 'index'])->name('guest.bookings');
 
     // Profile Management
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+
+    // Account Settings
+    Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+    Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
+    Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 });
 
 /*

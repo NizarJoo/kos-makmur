@@ -59,10 +59,13 @@
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            {{ __('Beranda') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('guest.boarding-houses.index')" :active="request()->routeIs('guest.boarding-houses.*')">
+                            {{ __('List Kos') }}
                         </x-nav-link>
                         <x-nav-link :href="route('guest.bookings')" :active="request()->routeIs('guest.bookings')">
-                            {{ __('My Bookings') }}
+                            {{ __('Pesananku') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -103,7 +106,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')" class="font-medium">
-                            {{ __('Profile') }}
+                            {{ __('Profil') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -112,7 +115,7 @@
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();"
                                 class="font-medium text-red-600 dark:text-red-400">
-                                {{ __('Log Out') }}
+                                {{ __('Keluar') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -170,10 +173,13 @@
                 </x-responsive-nav-link>
             @else
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+                    {{ __('Beranda') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('guest.boarding-houses.index')" :active="request()->routeIs('guest.boarding-houses.*')">
+                    {{ __('List Kos') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('guest.bookings')" :active="request()->routeIs('guest.bookings')">
-                    {{ __('My Bookings') }}
+                    {{ __('Pesananku') }}
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -187,7 +193,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Profil') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -196,7 +202,7 @@
 
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Keluar') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
