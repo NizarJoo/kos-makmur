@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Guests') }}
+                {{ __('Tamu') }}
             </h2>
             <a href="{{ route('guests.create') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                Register New Guest
+                Daftarkan Tamu Baru
             </a>
         </div>
     </x-slot>
@@ -21,19 +21,19 @@
                                 <tr class="border-b border-luxury-200 dark:border-luxury-700">
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Name
+                                        Nama
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Phone
+                                        Telepon
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        ID Number
+                                        Nomor ID
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Registered
+                                        Tanggal Registrasi
                                     </th>
                                     <th class="px-6 py-3"></th>
                                 </tr>
@@ -64,7 +64,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('guests.show', $guest) }}"
                                                 class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-900 dark:hover:text-luxury-300">
-                                                View
+                                                Detail
                                             </a>
                                         </td>
                                     </tr>

@@ -2,16 +2,16 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Room {{ $room->room_number }} Details
+                Detail Kamar {{ $room->room_number }}
             </h2>
             <div class="space-x-4">
                 <a href="{{ route('rooms.edit', $room) }}"
                     class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                    Edit Room
+                    Edit Kamar
                 </a>
                 <a href="{{ route('rooms.index') }}"
                     class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                    Back to Rooms
+                    Kembali ke Daftar Kamar
                 </a>
             </div>
         </div>
@@ -26,27 +26,27 @@
                         <div
                             class="bg-luxury-50 dark:bg-luxury-900/50 p-6 rounded-lg border border-luxury-200 dark:border-luxury-800">
                             <h3 class="text-2xl font-semibold text-luxury-800 dark:text-luxury-200 mb-4">
-                                Room Information
+                                Informasi Kamar
                             </h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Room
-                                        Number</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Nomor
+                                        Kamar</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
                                         {{ $room->room_number }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Capacity</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Kapasitas</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
-                                        {{ $room->capacity }} persons
+                                        {{ $room->capacity }} orang
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Price per
-                                        Night</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Harga per
+                                        Malam</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
-                                        ${{ number_format($room->price_per_night, 2) }}
+                                        Rp{{ number_format($room->price_per_night, 2) }}
                                     </p>
                                 </div>
                                 <div>
@@ -54,9 +54,9 @@
                                     <span @class([
                                         'inline-block px-3 py-1 rounded-full text-sm font-medium mt-1',
                                         'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' =>
-                                            $room->status === 'available',
+                                            $room->status === 'Tersedia',
                                         'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' =>
-                                            $room->status === 'occupied',
+                                            $room->status === 'Terisi',
                                     ])>
                                         {{ ucfirst($room->status) }}
                                     </span>
@@ -68,7 +68,7 @@
                         <div
                             class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-luxury-200 dark:border-luxury-800">
                             <h3 class="text-2xl font-semibold text-luxury-800 dark:text-luxury-200 mb-4">
-                                Current Booking
+                                Pemesanan Saat Ini
                             </h3>
                             @if ($room->bookings()->where('status', 'active')->first())
                                 @php $booking = $room->bookings()->where('status', 'active')->first() @endphp
@@ -96,7 +96,7 @@
                                 </div>
                             @else
                                 <p class="text-luxury-600/70 dark:text-luxury-400/70">
-                                    No active booking for this room.
+                                    Belum ada pemesanan untuk kamar ini.
                                 </p>
                             @endif
                         </div>

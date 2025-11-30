@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Edit Room') }} {{ $room->room_number }}
+                {{ __('Edit Kamar') }} {{ $room->room_number }}
             </h2>
             <a href="{{ route('rooms.show', $room) }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                Back to Room
+                Kembali ke DaftarKamar
             </a>
         </div>
     </x-slot>
@@ -20,23 +20,24 @@
                         @method('PUT')
 
                         <div>
-                            <x-input-label for="room_number" value="Room Number" />
+                            <x-input-label for="room_number" value="Nomor Kamar" />
                             <x-text-input id="room_number" name="room_number" type="text" class="mt-1 block w-full"
                                 :value="old('room_number', $room->room_number)" required />
                             <x-input-error :messages="$errors->get('room_number')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="capacity" value="Capacity (persons)" />
+                            <x-input-label for="capacity" value="Kapasitas (orang)" />
                             <x-text-input id="capacity" name="capacity" type="number" class="mt-1 block w-full"
                                 :value="old('capacity', $room->capacity)" required min="1" />
                             <x-input-error :messages="$errors->get('capacity')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="price_per_night" value="Price per Night ($)" />
+                            <x-input-label for="price_per_night" value="Harga per Malam (Rp)" />
                             <x-text-input id="price_per_night" name="price_per_night" type="number" step="0.01"
-                                class="mt-1 block w-full" :value="old('price_per_night', $room->price_per_night)" required min="0" />
+                                class="mt-1 block w-full" :value="old('price_per_night', $room->price_per_night)"
+                                required min="0" />
                             <x-input-error :messages="$errors->get('price_per_night')" class="mt-2" />
                         </div>
 
@@ -44,14 +45,11 @@
                             <x-input-label for="status" value="Status" />
                             <select id="status" name="status"
                                 class="mt-1 block w-full border-luxury-200 dark:border-luxury-700 bg-white/50 dark:bg-gray-900/50 text-luxury-900 dark:text-luxury-100 focus:border-luxury-500 dark:focus:border-luxury-600 focus:ring-luxury-500 dark:focus:ring-luxury-600 rounded-lg shadow-sm">
-                                <option value="available"
-                                    {{ old('status', $room->status) == 'available' ? 'selected' : '' }}>
-                                    Available</option>
-                                <option value="occupied"
-                                    {{ old('status', $room->status) == 'occupied' ? 'selected' : '' }}>
-                                    Occupied</option>
-                                <option value="maintenance"
-                                    {{ old('status', $room->status) == 'maintenance' ? 'selected' : '' }}>Maintenance
+                                <option value="Tersedia" {{ old('status', $room->status) == 'available' ? 'selected' : '' }}>
+                                    Tersedia/option>
+                                <option value="Terisi" {{ old('status', $room->status) == 'occupied' ? 'selected' : '' }}>
+                                    Terisi</option>
+                                <option value="Pemeliharaan" {{ old('status', $room->status) == 'maintenance' ? 'selected' : '' }}>Pemeliharaan
                                 </option>
                             </select>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
@@ -64,11 +62,11 @@
                                 @method('DELETE')
                                 <button type="submit"
                                     class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 transition ease-in-out duration-150">
-                                    Delete Room
+                                    Hapus Kamar
                                 </button>
                             </form>
                             <x-primary-button>
-                                {{ __('Update Room') }}
+                                {{ __('Perbarui Kamar') }}
                             </x-primary-button>
                         </div>
                     </form>

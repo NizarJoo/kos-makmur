@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Register New Guest') }}
+                {{ __('Daftarkan Tamu Baru') }}
             </h2>
             <a href="{{ route('guests.index') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                Back to Guests
+                Kembali ke Tamu
             </a>
         </div>
     </x-slot>
@@ -19,29 +19,29 @@
                         @csrf
 
                         <div>
-                            <x-input-label for="name" value="Full Name" />
+                            <x-input-label for="name" value="Nama" />
                             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"
                                 :value="old('name')" required autofocus />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="phone" value="Phone Number" />
+                            <x-input-label for="phone" value="Nomor Telepon" />
                             <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full"
-                                :value="old('phone')" required placeholder="e.g. +1234567890" />
+                                :value="old('phone')" required placeholder="Misalnya 085101234567" />
                             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                         </div>
 
                         <div>
-                            <x-input-label for="id_number" value="ID Number" />
+                            <x-input-label for="id_number" value="Nomer ID" />
                             <x-text-input id="id_number" name="id_number" type="text" class="mt-1 block w-full"
-                                :value="old('id_number')" required placeholder="e.g. Passport or National ID" />
+                                :value="old('id_number')" required placeholder="Misalnya Passpor or Nomor KTP" />
                             <x-input-error :messages="$errors->get('id_number')" class="mt-2" />
                         </div>
 
                         <div class="flex justify-end">
                             <x-primary-button>
-                                {{ __('Register Guest') }}
+                                {{ __('Daftarkan Pengguna') }}
                             </x-primary-button>
                         </div>
                     </form>

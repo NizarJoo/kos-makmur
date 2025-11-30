@@ -39,7 +39,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Check-in Date
+                                    Tanggal Check-in
                                 </label>
                                 <input type="date" name="check_in_date"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
@@ -49,7 +49,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Check-out Date
+                                    Tanggal Check-out
                                 </label>
                                 <input type="date" name="check_out_date"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">

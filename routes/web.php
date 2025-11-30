@@ -15,6 +15,7 @@ use App\Http\Controllers\GuestBookingController;
 
 // Public routes
 Route::get('/', function () {
+    // JANGAN check auth di sini
     $stats = [
         'roomCount' => Room::count(),
         'guestCount' => Guest::count(),
@@ -45,56 +46,51 @@ Route::get('/', function () {
 
     return view('welcome', compact('stats', 'availableRooms', 'roomTypes'));
 });
-
+// Authentication Routes
+require __DIR__ . '/auth.php';
 // Guest Booking Routes
 Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
 Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
+
+
 // Guest Routes (authenticated users)
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Guest Dashboard
     Route::get('/dashboard', function () {
-        if (auth()->user()->is_staff) {
-            return redirect()->route('staff.dashboard');
-        }
         return view('guest.dashboard');
     })->name('dashboard');
 
     Route::get('/my-bookings', [GuestBookingController::class, 'index'])->name('guest.bookings');
-    Route::get('/book-now', [GuestBookingController::class, 'create'])->name('guest.booking.create');
-    Route::post('/book-now', [GuestBookingController::class, 'store'])->name('guest.booking.store');
 
-    // Profile Biodata routes
+    // Profile routes
     Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
-    // Account routes (email, password, delete account)
+    // Account routes
     Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
     Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
     Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 });
 
-// Staff Routes
+// KEMBALIKAN KE STAFF ROUTES (seperti semula)
+
 Route::middleware(['auth', 'verified', 'staff'])->group(function () {
     Route::get('/staff/dashboard', [DashboardController::class, 'index'])->name('staff.dashboard');
-
     Route::resource('rooms', RoomController::class);
     Route::resource('guests', GuestController::class);
     Route::resource('bookings', BookingController::class);
+
+    // Tambahkan routes untuk approve/reject booking
+    Route::patch('/bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
+    Route::get('/bookings/{booking}/reject', [BookingController::class, 'showRejectForm'])->name('bookings.reject.form');
+    Route::patch('/bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
+
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 });
 
-// Superadmin Routes
-Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
-    // Master Data - Districts
+// Superadmin Routes (tetap pakai yang baru)
+Route::middleware(['auth', 'verified', 'staff:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // PAKAI index()
     Route::resource('districts', DistrictController::class)->except(['show']);
-});
-Route::middleware(['auth', 'verified', 'staff:superadmin'])->group(function () {
-    // Master Data - Districts
-    Route::resource('districts', DistrictController::class)->except(['show']);
-
-    // Master Data - Fasilitas
     Route::resource('facilities', FacilityController::class)->except(['show']);
 });
-
-require __DIR__ . '/auth.php';

@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('New Booking') }}
+                {{ __('Pemesanan Baru') }}
             </h2>
             <a href="{{ route('bookings.index') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                Back to Bookings
+                KEMBALI KE DAFTAR PEMESANAN
             </a>
         </div>
     </x-slot>
@@ -43,22 +43,22 @@
 
                         <!-- Selected Guests Preview -->
                         <div id="selected-guests-preview" class="space-y-2 hidden">
-                            <h4 class="text-sm font-medium text-luxury-700 dark:text-luxury-300">Selected Guests:</h4>
+                            <h4 class="text-sm font-medium text-luxury-700 dark:text-luxury-300">Tamu Terpilih:</h4>
                             <div id="selected-guests-list" class="space-y-2">
                             </div>
                         </div>
 
                         <!-- Room Selection -->
                         <div>
-                            <x-input-label for="room_id" value="Room" />
+                            <x-input-label for="room_id" value="Kamar" />
                             <select id="room_id" name="room_id"
                                 class="mt-1 block w-full border-luxury-200 dark:border-luxury-700 bg-white/50 dark:bg-gray-900/50 text-luxury-900 dark:text-luxury-100 focus:border-luxury-500 dark:focus:border-luxury-600 focus:ring-luxury-500 dark:focus:ring-luxury-600 rounded-lg shadow-sm">
-                                <option value="">Select a room</option>
+                                <option value="">Pilih Kamar</option>
                                 @foreach ($rooms as $room)
                                     <option value="{{ $room->id }}"
                                         {{ old('room_id') == $room->id ? 'selected' : '' }}
                                         data-price="{{ $room->price_per_night }}">
-                                        Room {{ $room->room_number }} ({{ $room->capacity }} persons) -
+                                        Kamar {{ $room->room_number }} ({{ $room->capacity }} orang) -
                                         ${{ number_format($room->price_per_night, 2) }}/night
                                     </option>
                                 @endforeach
@@ -68,7 +68,7 @@
 
                         <!-- Check-in Date -->
                         <div>
-                            <x-input-label for="check_in_date" value="Check-in Date" />
+                            <x-input-label for="check_in_date" value="Tanggal Check-in" />
                             <x-text-input id="check_in_date" name="check_in_date" type="date"
                                 class="mt-1 block w-full" :value="old('check_in_date')" required min="{{ date('Y-m-d') }}" />
                             <x-input-error :messages="$errors->get('check_in_date')" class="mt-2" />
@@ -76,7 +76,7 @@
 
                         <!-- Check-out Date -->
                         <div>
-                            <x-input-label for="check_out_date" value="Check-out Date" />
+                            <x-input-label for="check_out_date" value="Tanggal Check-out" />
                             <x-text-input id="check_out_date" name="check_out_date" type="date"
                                 class="mt-1 block w-full" :value="old('check_out_date')" required min="{{ date('Y-m-d') }}" />
                             <x-input-error :messages="$errors->get('check_out_date')" class="mt-2" />
@@ -86,7 +86,7 @@
                         <div
                             class="bg-luxury-50 dark:bg-luxury-900/50 p-4 rounded-lg border border-luxury-200 dark:border-luxury-800">
                             <div class="flex justify-between items-center">
-                                <span class="text-luxury-800 dark:text-luxury-200">Total Amount:</span>
+                                <span class="text-luxury-800 dark:text-luxury-200">Total Biaya:</span>
                                 <span class="text-2xl font-bold text-luxury-600 dark:text-luxury-400"
                                     id="total-amount">$0.00</span>
                             </div>

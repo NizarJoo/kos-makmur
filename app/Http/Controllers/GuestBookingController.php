@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
 use App\Models\Booking;
+use App\Models\Room;
+use App\Models\Guest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class GuestBookingController extends Controller
 {
@@ -31,35 +32,38 @@ class GuestBookingController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Validasi
+        $request->validate([
             'room_id' => 'required|exists:rooms,id',
             'check_in_date' => 'required|date|after:today',
             'check_out_date' => 'required|date|after:check_in_date',
         ]);
 
-        $room = Room::findOrFail($validated['room_id']);
+        // Cari kamar
+        $room = Room::findOrFail($request->room_id);
 
-        // Calculate number of nights
-        $checkIn = \Carbon\Carbon::parse($validated['check_in_date']);
-        $checkOut = \Carbon\Carbon::parse($validated['check_out_date']);
+        // Validasi ketersediaan kamar
+        if ($room->available_units <= 0) {
+            return back()->with('error', 'Kamar tidak tersedia untuk tanggal yang dipilih.');
+        }
+
+        // Hitung total amount
+        $checkIn = Carbon::parse($request->check_in_date);
+        $checkOut = Carbon::parse($request->check_out_date);
         $nights = $checkIn->diffInDays($checkOut);
+        $totalAmount = $room->price_per_night * $nights;
 
-
-        $user_id = Auth::id();
-
-        // Create booking
+        // Buat booking - GUNAKAN check_in_date dan check_out_date
         $booking = Booking::create([
             'room_id' => $room->id,
-            'guest_id' => $user_id,
-            'check_in_date' => $validated['check_in_date'],
-            'check_out_date' => $validated['check_out_date'],
-            'total_amount' => $room->price_per_night * $nights,
-            'status' => 'active'
+            'guest_id' => auth()->id(),
+            'check_in_date' => $request->check_in_date,    // PASTIKAN INI
+            'check_out_date' => $request->check_out_date,  // PASTIKAN INI
+            'total_amount' => $totalAmount,
+            'status' => 'pending', // Status awal pending
         ]);
 
-        $booking->save();
-
         return redirect()->route('guest.bookings')
-            ->with('success', 'Booking created successfully! We will confirm your booking shortly.');
+            ->with('success', 'Booking berhasil dibuat! Menunggu persetujuan admin.');
     }
 }

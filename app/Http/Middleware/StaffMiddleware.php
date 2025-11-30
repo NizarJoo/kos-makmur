@@ -20,7 +20,7 @@ class StaffMiddleware
         // User must be logged in
         if (!$user) {
             return redirect()->route('login')
-                ->with('error', 'Please login to access this area.');
+                ->with('error', 'Silakan login untuk mengakses area ini.');
         }
 
         // If no roles specified → allow all authenticated users
@@ -30,8 +30,9 @@ class StaffMiddleware
 
         // Check if user role is allowed
         if (!in_array($user->role, $roles)) {
+            // Redirect ke dashboard biasa, bukan staff dashboard
             return redirect()->route('dashboard')
-                ->with('error', 'You do not have permission to access this area.');
+                ->with('error', 'Anda tidak memiliki izin untuk mengakses area ini.');
         }
 
         return $next($request);

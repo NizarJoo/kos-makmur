@@ -4,17 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Room;
-use App\Models\Guest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $bookings = Booking::with(['guest', 'room'])->get();
-        return view('bookings.index', compact('bookings'));
-    }
+        $query = Booking::with(['guest', 'room'])->latest();
 
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $bookings = $query->paginate(10);
+
+        // DEBUG: Cek data booking
+        logger('Bookings data:', [
+            'total' => $bookings->count(),
+            'pending_count' => $bookings->where('status', 'pending')->count(),
+            'first_booking' => $bookings->first() ? [
+                'id' => $bookings->first()->id,
+                'status' => $bookings->first()->status,
+                'guest' => $bookings->first()->guest ? $bookings->first()->guest->name : 'No guest',
+                'room' => $bookings->first()->room ? $bookings->first()->room->name : 'No room'
+            ] : 'No bookings'
+        ]);
+
+        return view('admin.bookings.index', compact('bookings'));
+    }
     public function create()
     {
         $rooms = Room::where('status', 'available')->get();
@@ -82,4 +103,80 @@ class BookingController extends Controller
         return redirect()->route('bookings.show', $booking)
             ->with('success', 'Guest checked out successfully');
     }
+    public function approve(Booking $booking)
+    {
+        // Authorization check - hanya admin yang bisa approve
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menyetujui booking.');
+        }
+
+        // Validasi status booking
+        if (!$booking->canBeApproved()) {
+            return redirect()->back()->with('error', 'Booking tidak dapat disetujui.');
+        }
+
+        DB::transaction(function () use ($booking) {
+            $booking->update([
+                'status' => Booking::STATUS_APPROVED,
+                'rejection_reason' => null
+            ]);
+
+            $room = $booking->room;
+            if ($room->available_units > 0) {
+                $room->decrement('available_units');
+            }
+        });
+
+        return redirect()->route('bookings.index')
+            ->with('success', 'Booking berhasil disetujui.');
+    }
+
+    /**
+     * Reject a booking
+     */
+    public function reject(Request $request, Booking $booking)
+    {
+        // Authorization check - hanya admin yang bisa reject
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menolak booking.');
+        }
+
+        // Validasi status booking
+        if (!$booking->canBeRejected()) {
+            return redirect()->back()->with('error', 'Booking tidak dapat ditolak.');
+        }
+
+        // Validasi alasan penolakan
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500'
+        ]);
+
+        DB::transaction(function () use ($booking, $request) {
+            $booking->update([
+                'status' => Booking::STATUS_REJECTED,
+                'rejection_reason' => $request->rejection_reason
+            ]);
+        });
+
+        return redirect()->route('bookings.index')
+            ->with('success', 'Booking berhasil ditolak.');
+    }
+
+    /**
+     * Show rejection form
+     */
+    public function showRejectForm(Booking $booking)
+    {
+        if (!auth()->user()->isAdmin()) {
+            return redirect()->back()->with('error', 'Akses ditolak.');
+        }
+
+        if (!$booking->canBeRejected()) {
+            return redirect()->back()->with('error', 'Booking tidak dapat ditolak.');
+        }
+
+        return view('admin.bookings.reject', compact('booking'));
+    }
+
 }
+

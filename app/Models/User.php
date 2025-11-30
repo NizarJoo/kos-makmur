@@ -88,4 +88,8 @@ class User extends Authenticatable
     {
         return in_array($this->role, ['admin', 'superadmin']);
     }
+    public function getIsStaffAttribute()
+    {
+        return $this->isStaff();
+    }
 }

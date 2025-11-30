@@ -18,7 +18,7 @@
                 @endif
                 <a href="{{ route('bookings.index') }}"
                     class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                    Back to Bookings
+                    Kembali ke Pemesanan
                 </a>
             </div>
         </div>
@@ -33,7 +33,7 @@
                         <div
                             class="bg-luxury-50 dark:bg-luxury-900/50 p-6 rounded-lg border border-luxury-200 dark:border-luxury-800">
                             <h3 class="text-xl font-semibold text-luxury-800 dark:text-luxury-200 mb-4">
-                                Guests Information
+                                Informasi Tamu
                             </h3>
                             <div class="space-y-4">
                                 @foreach ($booking->room->bookings()->where('check_in_date', $booking->check_in_date)->get() as $guestBooking)
@@ -43,8 +43,7 @@
                                             <h4 class="font-medium text-luxury-800 dark:text-luxury-200">
                                                 {{ $guestBooking?->guest?->name || 'Guest' }}
                                                 @if ($loop->first)
-                                                    <span
-                                                        class="text-xs text-luxury-600 dark:text-luxury-400 ml-2">Primary
+                                                    <span class="text-xs text-luxury-600 dark:text-luxury-400 ml-2">Primary
                                                         Guest</span>
                                                 @endif
                                             </h4>
@@ -54,7 +53,7 @@
                                                 ID: {{ $guestBooking?->guest?->id_number }}
                                             </p>
                                             <p class="text-sm text-luxury-600/70 dark:text-luxury-400/70">
-                                                Phone: {{ $guestBooking?->guest?->phone }}
+                                                Telepon: {{ $guestBooking?->guest?->phone }}
                                             </p>
                                         </div>
                                     </div>
@@ -66,27 +65,27 @@
                         <div
                             class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-luxury-200 dark:border-luxury-800">
                             <h3 class="text-xl font-semibold text-luxury-800 dark:text-luxury-200 mb-4">
-                                Room Information
+                                Informasi Kamar
                             </h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Room
-                                        Number</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Nomor
+                                        Kamar</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
                                         {{ $booking->room->room_number }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Capacity</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Kapasitas</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
-                                        {{ $booking->room->capacity }} persons
+                                        {{ $booking->room->capacity }} orang
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Price per
-                                        Night</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Harga per
+                                        Malam</label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
-                                        ${{ number_format($booking->room->price_per_night, 2) }}
+                                        Rupiah{{ number_format($booking->room->price_per_night, 2) }}
                                     </p>
                                 </div>
                             </div>
@@ -96,19 +95,19 @@
                         <div
                             class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-luxury-200 dark:border-luxury-800 md:col-span-2">
                             <h3 class="text-xl font-semibold text-luxury-800 dark:text-luxury-200 mb-4">
-                                Booking Details
+                                Rincian Pemesanan
                             </h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Check-in
-                                        Date</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Tanggal Check-in
+                                    </label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
                                         {{ $booking->check_in_date->format('M d, Y') }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Check-out
-                                        Date</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Tanggal Check-out
+                                    </label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
                                         {{ $booking->check_out_date->format('M d, Y') }}
                                     </p>
@@ -128,10 +127,10 @@
                                     </span>
                                 </div>
                                 <div>
-                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Total
-                                        Amount</label>
+                                    <label class="text-sm text-luxury-600/70 dark:text-luxury-400/70">Total Tagihan
+                                    </label>
                                     <p class="text-lg font-medium text-luxury-800 dark:text-luxury-200">
-                                        ${{ number_format($booking->total_amount, 2) }}
+                                        Rupiah {{ number_format($booking->total_amount, 2) }}
                                     </p>
                                 </div>
                             </div>

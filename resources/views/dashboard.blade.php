@@ -14,11 +14,12 @@
                     class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Active Bookings</p>
+                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Pemesanan Aktif</p>
                             <p class="text-2xl font-bold text-luxury-900 dark:text-gold-300">
-                                {{ $stats['activeBookings'] }}</p>
+                                {{ $stats['activeBookings'] }}
+                            </p>
                             <p class="text-sm text-luxury-500 dark:text-gold-500/70">{{ $stats['checkoutsToday'] }}
-                                checkouts today</p>
+                                checkout hari ini</p>
                         </div>
                         <div
                             class="p-3 bg-gradient-to-br from-luxury-100 to-white dark:from-gold-900/20 dark:to-gray-800/20 rounded-full">
@@ -31,16 +32,17 @@
                     </div>
                 </div>
 
-                <!-- Available Rooms -->
+                <!-- Kamar Tersedia -->
                 <div
                     class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Available Rooms</p>
+                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Kamar Tersedia</p>
                             <p class="text-2xl font-bold text-luxury-900 dark:text-gold-300">
-                                {{ $stats['availableRooms'] }}</p>
+                                {{ $stats['availableRooms'] }}
+                            </p>
                             <p class="text-sm text-luxury-500 dark:text-gold-500/70">{{ $stats['occupancyRate'] }}%
-                                occupancy rate</p>
+                                tingkat hunian</p>
                         </div>
                         <div
                             class="p-3 bg-gradient-to-br from-luxury-100 to-white dark:from-gold-900/20 dark:to-gray-800/20 rounded-full">
@@ -53,16 +55,16 @@
                     </div>
                 </div>
 
-                <!-- Total Guests -->
+                <!-- Total Tamu -->
                 <div
                     class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Total Guests</p>
+                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Total Tamu</p>
                             <p class="text-2xl font-bold text-luxury-900 dark:text-gold-300">{{ $stats['totalGuests'] }}
                             </p>
                             <p class="text-sm text-luxury-500 dark:text-gold-500/70">{{ $stats['newGuestsThisMonth'] }}
-                                new this month</p>
+                                baru bulan ini</p>
                         </div>
                         <div
                             class="p-3 bg-gradient-to-br from-luxury-100 to-white dark:from-gold-900/20 dark:to-gray-800/20 rounded-full">
@@ -75,16 +77,16 @@
                     </div>
                 </div>
 
-                <!-- Monthly Revenue -->
+                <!-- Pendapatan Bulanan -->
                 <div
                     class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur p-6">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Monthly Revenue</p>
+                            <p class="text-sm font-medium text-luxury-600 dark:text-gold-400">Pendapatan Bulanan</p>
                             <p class="text-2xl font-bold text-luxury-900 dark:text-gold-300">
                                 ${{ number_format($stats['monthlyRevenue'], 2) }}</p>
                             <p class="text-sm text-luxury-500 dark:text-gold-500/70">{{ $stats['revenueGrowth'] }}% vs
-                                last month</p>
+                                bulan lalu</p>
                         </div>
                         <div
                             class="p-3 bg-gradient-to-br from-luxury-100 to-white dark:from-gold-900/20 dark:to-gray-800/20 rounded-full">
@@ -98,20 +100,21 @@
                 </div>
             </div>
 
-            <!-- Room Status Overview -->
+            <!-- Ringkasan Status Kamar -->
             <div
                 class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur">
                 <div class="p-6">
-                    <h3 class="text-lg font-serif font-semibold text-luxury-800 dark:text-gold-300 mb-4">Room Status
-                        Overview</h3>
+                    <h3 class="text-lg font-serif font-semibold text-luxury-800 dark:text-gold-300 mb-4">Ringkasan
+                        Status Kamar</h3>
                     <div class="grid gap-4 md:grid-cols-3">
                         <!-- Available -->
                         <div
                             class="flex items-center justify-between p-4 bg-gradient-to-br from-green-50/50 to-white/30 dark:from-green-900/20 dark:to-gray-800/30 rounded-lg border border-green-200/20 dark:border-green-500/10">
                             <div>
-                                <p class="text-sm font-medium text-green-700 dark:text-green-400">Available</p>
+                                <p class="text-sm font-medium text-green-700 dark:text-green-400">Tersedia</p>
                                 <p class="text-2xl font-bold text-green-600 dark:text-green-300">
-                                    {{ $stats['availableRooms'] }}</p>
+                                    {{ $stats['availableRooms'] }}
+                                </p>
                             </div>
                             <div
                                 class="p-2 bg-gradient-to-br from-green-100 to-white dark:from-green-900/30 dark:to-green-900/10 rounded-full">
@@ -127,14 +130,15 @@
                         <div
                             class="flex items-center justify-between p-4 bg-gradient-to-br from-blue-50/50 to-white/30 dark:from-blue-900/20 dark:to-gray-800/30 rounded-lg border border-blue-200/20 dark:border-blue-500/10">
                             <div>
-                                <p class="text-sm font-medium text-blue-700 dark:text-blue-400">Occupied</p>
+                                <p class="text-sm font-medium text-blue-700 dark:text-blue-400">Terisi</p>
                                 <p class="text-2xl font-bold text-blue-600 dark:text-blue-300">
-                                    {{ $stats['occupiedRooms'] }}</p>
+                                    {{ $stats['occupiedRooms'] }}
+                                </p>
                             </div>
                             <div
                                 class="p-2 bg-gradient-to-br from-blue-100 to-white dark:from-blue-900/30 dark:to-blue-900/10 rounded-full">
-                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4" />
                                 </svg>
@@ -145,9 +149,10 @@
                         <div
                             class="flex items-center justify-between p-4 bg-gradient-to-br from-amber-50/50 to-white/30 dark:from-amber-900/20 dark:to-gray-800/30 rounded-lg border border-amber-200/20 dark:border-amber-500/10">
                             <div>
-                                <p class="text-sm font-medium text-amber-700 dark:text-amber-400">Maintenance</p>
+                                <p class="text-sm font-medium text-amber-700 dark:text-amber-400">Pemeliharaan</p>
                                 <p class="text-2xl font-bold text-amber-600 dark:text-amber-300">
-                                    {{ $stats['maintenanceRooms'] }}</p>
+                                    {{ $stats['maintenanceRooms'] }}
+                                </p>
                             </div>
                             <div
                                 class="p-2 bg-gradient-to-br from-amber-100 to-white dark:from-amber-900/30 dark:to-amber-900/10 rounded-full">
@@ -166,7 +171,7 @@
             <div
                 class="bg-gradient-to-br from-white/95 to-white/50 dark:from-gray-800/90 dark:to-gray-900/50 overflow-hidden shadow-luxury gold-border rounded-lg bg-blur">
                 <div class="p-6">
-                    <h3 class="text-lg font-serif font-semibold text-luxury-800 dark:text-gold-300 mb-4">Quick Actions
+                    <h3 class="text-lg font-serif font-semibold text-luxury-800 dark:text-gold-300 mb-4">Aksi Cepat
                     </h3>
                     <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
                         <a href="{{ route('rooms.create') }}"
@@ -180,8 +185,8 @@
                                 </svg>
                             </div>
                             <span
-                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Add
-                                New Room</span>
+                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Tambah
+                                Kamar Baru</span>
                         </a>
 
                         <a href="{{ route('bookings.create') }}"
@@ -195,7 +200,7 @@
                                 </svg>
                             </div>
                             <span
-                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">New
+                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Buat
                                 Booking</span>
                         </a>
 
@@ -210,8 +215,8 @@
                                 </svg>
                             </div>
                             <span
-                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Register
-                                Guest</span>
+                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Daftarkan
+                                Tamu</span>
                         </a>
 
                         <a href="{{ route('rooms.index') }}"
@@ -225,8 +230,8 @@
                                 </svg>
                             </div>
                             <span
-                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">View
-                                All Rooms</span>
+                                class="text-luxury-800 dark:text-gold-300 group-hover:text-luxury-900 dark:group-hover:text-gold-200">Lihat
+                                Semua Kamar</span>
                         </a>
                     </div>
                 </div>

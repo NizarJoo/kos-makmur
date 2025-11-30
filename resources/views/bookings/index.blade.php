@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Bookings') }}
+                {{ __('Pemesanan') }}
             </h2>
             <a href="{{ route('bookings.create') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                New Booking
+                Buat Pemesanan Baru
             </a>
         </div>
     </x-slot>
@@ -21,11 +21,11 @@
                                 <tr class="border-b border-luxury-200 dark:border-luxury-700">
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Guest
+                                        Tamu
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Room
+                                        Kamar
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
@@ -41,7 +41,7 @@
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-luxury-500 dark:text-luxury-400 uppercase tracking-wider">
-                                        Amount
+                                        Total Harga
                                     </th>
                                     <th class="px-6 py-3"></th>
                                 </tr>
@@ -59,7 +59,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-luxury-900 dark:text-luxury-100">
-                                                Room {{ $booking->room->room_number }}
+                                                Kamar {{ $booking->room->room_number }}
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -92,7 +92,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('bookings.show', $booking) }}"
                                                 class="text-luxury-600 dark:text-luxury-400 hover:text-luxury-900 dark:hover:text-luxury-300">
-                                                View
+                                                Detail
                                             </a>
                                         </td>
                                     </tr>

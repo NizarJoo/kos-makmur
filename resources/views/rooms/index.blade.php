@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Rooms') }}
+                {{ __('Kamar') }}
             </h2>
             <a href="{{ route('rooms.create') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                Add New Room
+                Tambah Kamar Baru
             </a>
         </div>
     </x-slot>
@@ -24,10 +24,10 @@
                                     <div class="flex justify-between items-start">
                                         <div>
                                             <h3 class="text-xl font-semibold text-luxury-800 dark:text-luxury-200">
-                                                Room {{ $room->room_number }}
+                                                Kamar {{ $room->room_number }}
                                             </h3>
                                             <p class="text-luxury-600/70 dark:text-luxury-400/70 mt-1">
-                                                Capacity: {{ $room->capacity }} persons
+                                                Kapasitas: {{ $room->capacity }} orang
                                             </p>
                                         </div>
                                         <span @class([
@@ -44,9 +44,8 @@
                                     <div class="mt-4">
                                         <p class="text-2xl font-bold text-luxury-600 dark:text-luxury-400">
                                             ${{ number_format($room->price_per_night, 2) }}
-                                            <span
-                                                class="text-sm font-normal text-luxury-600/70 dark:text-luxury-400/70">
-                                                / night
+                                            <span class="text-sm font-normal text-luxury-600/70 dark:text-luxury-400/70">
+                                                / malam
                                             </span>
                                         </p>
                                     </div>
@@ -54,7 +53,7 @@
                                     <div class="mt-6 flex justify-end">
                                         <a href="{{ route('rooms.show', $room) }}"
                                             class="inline-flex items-center px-4 py-2 bg-luxury-600 dark:bg-luxury-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-luxury-700 dark:hover:bg-luxury-600 transition ease-in-out duration-150">
-                                            View Details
+                                            Info Detail
                                         </a>
                                     </div>
                                 </div>
