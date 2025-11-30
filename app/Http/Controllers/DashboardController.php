@@ -50,7 +50,7 @@ class DashboardController extends Controller
             'checkinsToday' => Booking::where('check_in_date', $today)->where('status', 'active')->count(),
         ];
 
-        $recentBookings = Booking::with(['room', 'guest'])
+        $recentBookings = Booking::with(['room', 'user'])
             ->latest()
             ->take(5)
             ->get()

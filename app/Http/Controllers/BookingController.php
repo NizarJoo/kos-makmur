@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Kamar;
-use App\Models\Kos;
+use App\Models\Room;
+use App\Models\BoardingHouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,15 +12,14 @@ class BookingController extends Controller
 {
     /**
      * Display a listing of user's bookings.
-     * Sesuai SRS: User hanya bisa melihat bookings miliknya
      */
     public function index()
     {
         $bookings = auth()->user()->bookings()
-            ->with(['kamar.kos', 'kos']) // Eager loading untuk performa
+            ->with(['room.boardingHouse', 'boardingHouse'])
             ->latest()
             ->paginate(10);
-        
+
         return view('guest.bookings.index', compact('bookings'));
     }
 
@@ -29,88 +28,86 @@ class BookingController extends Controller
      */
     public function create()
     {
-        // Ambil semua kos yang sudah verified dengan kamar yang available
-        $kosItems = Kos::where('is_verified', true)
-            ->with(['kamar' => function($query) {
-                $query->where('available_units', '>', 0)
-                      ->whereNull('deleted_at');
-            }])
-            ->whereNull('deleted_at')
-            ->get();
-        
-        return view('guest.bookings.create', compact('kosItems'));
+        $boardingHouses = BoardingHouse::whereNull('deleted_at')->get();
+
+        return view('guest.bookings.create', compact('boardingHouses'));
     }
 
     /**
-     * Store a newly created booking in storage.
-     * Sesuai SRS Section 4.3.1: Alur User: Pencarian & Pengajuan Booking
+     * Store a newly created booking.
+     * Sesuai SRS Section 4.3.1
      */
     public function store(Request $request)
     {
+        // Parse dates and calculate duration_months early
+        $checkInDate = \Carbon\Carbon::parse($request->input('check_in_date'));
+        $checkOutDate = \Carbon\Carbon::parse($request->input('check_out_date'));
+
+        $totalDays = $checkInDate->diffInDays($checkOutDate);
+        $durationMonths = (int) ceil($totalDays / 30);
+
+        // Merge duration_months into the request for validation
+        $request->merge(['duration_months' => $durationMonths]);
+
         $validated = $request->validate([
-            'kamar_id' => 'required|exists:kamar,id',
-            'start_date' => 'required|date|after:today',
-            'end_date' => 'required|date|after:start_date',
+            'room_id' => 'required|exists:rooms,id',
+            'check_in_date' => 'required|date|after:today',
+            'check_out_date' => 'required|date|after:check_in_date',
+            'duration_months' => 'required|integer|min:1', // Now validates against merged request data
             'notes' => 'nullable|string|max:500',
         ]);
 
-        $kamar = Kamar::with('kos')->findOrFail($validated['kamar_id']);
-        
+        $room = Room::with('boardingHouse')->findOrFail($validated['room_id']);
+
         // ===== VALIDASI SESUAI SRS =====
-        
+
         // 1. Cek available_units > 0
-        if ($kamar->available_units <= 0) {
+        if ($room->available_units <= 0) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'This room type is currently not available.');
         }
 
-        // 2. Cek user tidak punya booking active untuk kamar yang sama
+        // 2. Cek user tidak punya booking active untuk room yang sama
         $hasActiveBooking = auth()->user()->bookings()
-            ->where('kamar_id', $kamar->id)
+            ->where('room_id', $room->id)
             ->where('status', 'active')
             ->exists();
-        
+
         if ($hasActiveBooking) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'You already have an active booking for this room type.');
         }
 
-        // ===== PERHITUNGAN SESUAI SRS (Section 5.1) =====
-        
-        $startDate = \Carbon\Carbon::parse($validated['start_date']);
-        $endDate = \Carbon\Carbon::parse($validated['end_date']);
-        
-        // duration_months: CEIL(DATEDIFF(end_date, start_date) / 30)
-        $totalDays = $startDate->diffInDays($endDate);
-        $durationMonths = (int) ceil($totalDays / 30);
-        
-        // total_price: kamar.price * duration_months
-        $totalPrice = $kamar->price * $durationMonths;
+        // ===== PERHITUNGAN SESUAI SRS =====
+        // Duration months is already calculated and merged into $request and $validated
 
-        // Generate booking code: format BOOK-YYYYMMDD-XXXXX
+        // total_amount: room.price_per_month * duration_months
+        $totalAmount = $room->price_per_month * $durationMonths;
+
+        // Generate booking code
         $bookingCode = 'BOOK-' . date('Ymd') . '-' . strtoupper(Str::random(5));
 
         // ===== SIMPAN BOOKING =====
-        
+
         $booking = Booking::create([
             'booking_code' => $bookingCode,
-            'user_id' => auth()->id(),
-            'kamar_id' => $kamar->id,
-            'kos_id' => $kamar->kos_id,
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
+            'guest_id' => auth()->id(),
+            'room_id' => $room->id,
+            'boarding_house_id' => $room->boarding_house_id,
+            'check_in_date' => $validated['check_in_date'],
+            'check_out_date' => $validated['check_out_date'],
             'duration_months' => $durationMonths,
-            'total_price' => $totalPrice,
-            'status' => 'pending', // Status awal selalu pending
-            'notes' => $validated['notes'],
+            'total_amount' => $totalAmount, // Changed from totalPrice
+            'status' => 'pending',
+            'notes' => $validated['notes'] ?? null,
         ]);
 
-        // TODO: Kirim notifikasi ke Admin pemilik kos (akan diimplementasikan nanti)
-        // $this->notifyAdmin($kamar->kos->admin_id, $booking);
+        // TODO: Kirim notifikasi ke Admin
+        // event(new BookingCreated($booking));
 
-        return redirect()->route('guest.booking.show', $booking->id)
+        return redirect()->route('guest.bookings.show', $booking->id)
             ->with('success', 'Booking request submitted successfully! Please wait for admin approval.');
     }
 
@@ -119,46 +116,41 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        // User hanya bisa melihat booking miliknya sendiri
         $booking = auth()->user()->bookings()
-            ->with(['kamar.kos', 'kos'])
+            ->with(['room.boardingHouse', 'boardingHouse'])
             ->findOrFail($id);
-        
+
         return view('guest.bookings.show', compact('booking'));
     }
 
     /**
      * Cancel a pending booking.
-     * Sesuai SRS: User bisa cancel booking dengan status 'pending'
      */
     public function cancel($id)
     {
         $booking = auth()->user()->bookings()->findOrFail($id);
-        
-        // Validasi: hanya booking dengan status 'pending' yang bisa di-cancel
+
         if ($booking->status !== 'pending') {
             return redirect()->back()
                 ->with('error', 'Only pending bookings can be cancelled.');
         }
-        
+
         $booking->update(['status' => 'cancelled']);
-        
+
         return redirect()->route('guest.bookings.index')
             ->with('success', 'Booking cancelled successfully.');
     }
 
     /**
-     * Get available rooms for a specific kos (AJAX).
-     * Digunakan di form create untuk dynamic room selection
+     * Get available rooms for a specific boarding house (AJAX).
      */
-    public function getAvailableRooms($kosId)
+    public function getAvailableRooms($boardingHouseId)
     {
-        $kamarList = Kamar::where('kos_id', $kosId)
-            ->where('available_units', '>', 0)
+        $rooms = Room::where('boarding_house_id', $boardingHouseId)
             ->whereNull('deleted_at')
-            ->with('fasilitas')
+            ->with('facilities')
             ->get();
-        
-        return response()->json($kamarList);
+
+        return response()->json($rooms);
     }
 }

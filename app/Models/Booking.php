@@ -13,28 +13,27 @@ class Booking extends Model
 
     protected $fillable = [
         'booking_code',
-        'user_id',
-        'kamar_id',
-        'kos_id',
-        'start_date',
-        'end_date',
+        'guest_id',
+        'room_id',
+        'boarding_house_id',
+        'check_in_date',
+        'check_out_date',
         'duration_months',
-        'total_price',
+        'total_amount', // Changed from total_price
         'status',
         'notes',
         'rejection_reason',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'check_in_date' => 'date',
+        'check_out_date' => 'date',
         'duration_months' => 'integer',
-        'total_price' => 'decimal:2',
+        'total_amount' => 'decimal:2', // Changed from total_price
     ];
 
     /**
-     * Status yang diperbolehkan sesuai SRS:
-     * pending, approved, rejected, active, finished, cancelled
+     * Status constants
      */
     const STATUS_PENDING = 'pending';
     const STATUS_APPROVED = 'approved';
@@ -48,23 +47,23 @@ class Booking extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'guest_id');
     }
 
     /**
-     * Relasi ke Kamar
+     * Relasi ke Room
      */
-    public function kamar()
+    public function room()
     {
-        return $this->belongsTo(Kamar::class);
+        return $this->belongsTo(Room::class);
     }
 
     /**
-     * Relasi ke Kos
+     * Relasi ke BoardingHouse
      */
-    public function kos()
+    public function boardingHouse()
     {
-        return $this->belongsTo(Kos::class);
+        return $this->belongsTo(BoardingHouse::class);
     }
 
     /**
@@ -94,7 +93,7 @@ class Booking extends Model
     /**
      * Check apakah booking bisa di-cancel
      */
-    public function canBeCancelled()
+    public function canBeCancelled(): bool
     {
         return $this->status === self::STATUS_PENDING;
     }
@@ -102,7 +101,7 @@ class Booking extends Model
     /**
      * Check apakah booking bisa di-approve (untuk Admin)
      */
-    public function canBeApproved()
+    public function canBeApproved(): bool
     {
         return $this->status === self::STATUS_PENDING;
     }
@@ -110,7 +109,7 @@ class Booking extends Model
     /**
      * Get status badge color untuk UI
      */
-    public function getStatusColorAttribute()
+    public function getStatusColorAttribute(): string
     {
         return match($this->status) {
             'active' => 'green',
@@ -126,8 +125,8 @@ class Booking extends Model
     /**
      * Format harga untuk display
      */
-    public function getFormattedPriceAttribute()
+    public function getFormattedPriceAttribute(): string
     {
-        return 'Rp ' . number_format($this->total_price, 0, ',', '.');
+        return 'Rp ' . number_format($this->total_amount, 0, ',', '.');
     }
 }

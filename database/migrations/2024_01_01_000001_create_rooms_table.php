@@ -10,16 +10,23 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('room_number', 10)->unique();
-            $table->integer('capacity');
-            $table->decimal('price_per_night', 10, 2);
-            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
-            $table->string('featured_image')->nullable();
-            $table->json('gallery_images')->nullable();
+            $table->foreignId('boarding_house_id')->constrained('boarding_houses')->onDelete('cascade');
+            
+            $table->string('type_name', 100); // Tipe kamar (Standard, Deluxe, VIP)
+            $table->string('size', 50)->nullable(); // Ukuran kamar (3x4m)
+            $table->decimal('price_per_month', 10, 2); // Harga per bulan
+            
+            // Availability management
+            $table->integer('availability')->default(0)->comment('Total units available');
+            $table->integer('available_units')->default(0)->comment('Units yang bisa di-booking');
+            
             $table->text('description')->nullable();
-            $table->string('room_type')->nullable();
-            $table->json('amenities')->nullable();
+            $table->string('image_path')->nullable();
+            
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('boarding_house_id');
         });
     }
 

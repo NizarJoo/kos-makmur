@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('My Bookings') }}
             </h2>
-            <a href="{{ route('guest.booking.create') }}"
+            <a href="{{ route('booking.create') }}"
                 class="inline-flex items-center px-4 py-2 bg-luxury-800 dark:bg-luxury-700 text-white font-medium rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
                 <span>New Booking</span>
                 <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +33,7 @@
                     @if ($bookings->isEmpty())
                         <div class="text-center py-8">
                             <p class="text-luxury-600 dark:text-luxury-400 mb-4">You don't have any bookings yet.</p>
-                            <a href="{{ route('guest.booking.create') }}"
+                            <a href="{{ route('booking.create') }}"
                                 class="inline-flex items-center px-4 py-2 bg-luxury-800 dark:bg-luxury-700 text-white font-medium rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
                                 Book Your Stay
                             </a>
@@ -47,7 +47,7 @@
                                     <div class="flex justify-between items-start mb-4">
                                         <div>
                                             <h3 class="font-medium text-luxury-900 dark:text-luxury-100 text-lg">
-                                                {{ $booking->kos->name }}
+                                                {{ $booking->boardingHouse?->name }}
                                             </h3>
                                             <p class="text-sm text-luxury-600 dark:text-luxury-400">
                                                 Booking Code: <span
@@ -71,14 +71,14 @@
                                         <div>
                                             <p class="text-sm text-luxury-600 dark:text-luxury-400">Room Type</p>
                                             <p class="font-medium text-luxury-900 dark:text-luxury-100">
-                                                {{ $booking->kamar->type_name }}
+                                                {{ $booking->room?->type_name }}
                                             </p>
                                         </div>
                                         <div>
                                             <p class="text-sm text-luxury-600 dark:text-luxury-400">Duration</p>
                                             <p class="font-medium text-luxury-900 dark:text-luxury-100">
                                                 {{ $booking->duration_months }}
-                                                {{ Str::plural('month', $booking->duration_months) }}
+                                                {{ \Illuminate\Support\Str::plural('month', $booking->duration_months) }}
                                             </p>
                                         </div>
                                         <div>
@@ -108,7 +108,7 @@
                                         <!-- Action Buttons -->
                                         <div class="flex space-x-2">
                                             @if($booking->status === 'pending')
-                                                <form action="{{ route('guest.booking.cancel', $booking->id) }}" method="POST"
+                                                <form action="{{ route('guest.bookings.cancel', $booking->id) }}" method="POST"
                                                     onsubmit="return confirm('Are you sure you want to cancel this booking?');">
                                                     @csrf
                                                     @method('PUT')
@@ -119,7 +119,7 @@
                                                 </form>
                                             @endif
 
-                                            <a href="{{ route('guest.booking.show', $booking->id) }}"
+                                            <a href="{{ route('guest.bookings.show', $booking->id) }}"
                                                 class="px-4 py-2 bg-luxury-800 hover:bg-luxury-900 text-white font-medium rounded-lg transition-colors">
                                                 View Details
                                             </a>

@@ -58,7 +58,7 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('guest.bookings')" :active="request()->routeIs('guest.bookings')">
+                        <x-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">
                             {{ __('My Bookings') }}
                         </x-nav-link>
                     @endif
@@ -153,7 +153,7 @@
                     </x-responsive-nav-link>
                 @endif
 
-                <x-responsive-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.*')">
+                <x-responsive-nav-link :href="route('legacy.rooms.index')" :active="request()->routeIs('rooms.*')">
                     {{ __('Rooms') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
@@ -166,7 +166,7 @@
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guest.bookings')" :active="request()->routeIs('guest.bookings')">
+                <x-responsive-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">
                     {{ __('My Bookings') }}
                 </x-responsive-nav-link>
             @endif
