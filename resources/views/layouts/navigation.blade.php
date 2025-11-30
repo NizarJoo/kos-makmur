@@ -35,11 +35,15 @@
                             <x-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
                                 {{ __('Facilities') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
+                                {{ __('Verifikasi Kos') }}
+                            </x-nav-link>
                         @endif
 
                         {{-- Menu untuk Admin --}}
                         @if (auth()->user()->isAdmin())
-                            <x-nav-link :href="route('boarding-houses.index')" :active="request()->routeIs('boarding-houses.*')">
+                            <x-nav-link :href="route('boarding-houses.index')"
+                                :active="request()->routeIs('boarding-houses.*')">
                                 {{ __('Boarding Houses') }}
                             </x-nav-link>
                         @endif
@@ -143,6 +147,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
                         {{ __('Facilities') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
+                        {{ __('Verifikasi Kos') }}
                     </x-responsive-nav-link>
                 @endif
 
