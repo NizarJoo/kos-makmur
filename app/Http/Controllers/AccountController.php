@@ -9,20 +9,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
-class ProfileController extends Controller
+class AccountController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's account settings form.
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        return view('profile.account.index', [
+            'user' => Auth::user()
         ]);
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's account information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('account.edit')->with('status', 'profile-updated');
     }
 
     /**

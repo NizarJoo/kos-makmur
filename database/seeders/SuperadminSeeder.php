@@ -18,7 +18,6 @@ class SuperadminSeeder extends Seeder
             'email' => 'superadmin@ekost.com',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
-            'is_staff' => true,
             'email_verified_at' => now(),
         ]);
 

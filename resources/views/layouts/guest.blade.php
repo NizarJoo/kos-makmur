@@ -24,7 +24,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <div class="relative overflow-hidden min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
         <!-- Decorative Elements -->
         <div class="absolute inset-0 z-0">
             <div
@@ -50,7 +50,7 @@
         </div>
 
         <div class="z-10 mt-8 text-center text-sm text-luxury-600/60 dark:text-luxury-400/60">
-            <p>© {{ date('Y') }} Luxury Hostel. All rights reserved.</p>
+            <p>© {{ date('Y') }} Papikos. All rights reserved.</p>
         </div>
     </div>
 </body>

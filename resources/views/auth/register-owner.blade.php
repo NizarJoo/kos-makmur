@@ -5,61 +5,69 @@
         <div class="mb-10 text-center">
             <h2
                 class="font-serif text-4xl font-bold bg-gradient-to-r from-luxury-800 to-accent-800 dark:from-luxury-400 dark:to-accent-400 bg-clip-text text-transparent">
-                Selamat Datang Kembali
+                Buat Akun
             </h2>
-
             <div class="h-1 w-20 bg-gradient-to-r from-luxury-600 to-accent-600 mx-auto mt-4 rounded-full"></div>
-
             <p class="text-sm text-luxury-600/70 dark:text-luxury-400/70 mt-4">
-                Silakan masuk untuk melanjutkan pengalaman Anda
+                Bergabung dan mulai pengalaman terbaik Anda
             </p>
         </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <form method="POST" action="{{ route('login') }}" class="space-y-7">
+        <form method="POST" action="{{ route('register.owner.store') }}" class="space-y-7">
             @csrf
 
-            <!-- Email Address -->
+            <!-- Name -->
+            <div class="relative">
+                <x-input-label for="name" :value="__('Nama Lengkap')"
+                    class="text-luxury-700 dark:text-luxury-300 absolute -top-2 left-3 bg-white dark:bg-gray-800 px-2 text-sm" />
+                
+                <x-text-input id="name" class="block w-full p-4 border-2" 
+                    type="text" name="name" required autofocus :value="old('name')"
+                    placeholder="Masukkan nama lengkap" />
+                
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <!-- Email -->
             <div class="relative">
                 <x-input-label for="email" :value="__('Email')"
                     class="text-luxury-700 dark:text-luxury-300 absolute -top-2 left-3 bg-white dark:bg-gray-800 px-2 text-sm" />
-                <x-text-input id="email" class="block w-full p-4 border-2" type="email" name="email"
-                    :value="old('email')" required autofocus autocomplete="username" placeholder="Masukkan email Anda" />
+                
+                <x-text-input id="email" class="block w-full p-4 border-2" 
+                    type="email" name="email" required :value="old('email')"
+                    placeholder="Masukkan email Anda" />
+                
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
             <!-- Password -->
             <div class="relative">
-                <x-input-label for="password" :value="__('Password')"
+                <x-input-label for="password" :value="__('Kata Sandi')"
                     class="text-luxury-700 dark:text-luxury-300 absolute -top-2 left-3 bg-white dark:bg-gray-800 px-2 text-sm" />
-                <x-text-input id="password" class="block w-full p-4 border-2" type="password" name="password" required
-                    autocomplete="current-password" placeholder="Masukkan kata sandi Anda" />
+                
+                <x-text-input id="password" class="block w-full p-4 border-2" 
+                    type="password" name="password" required
+                    placeholder="Buat kata sandi" />
+                
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
 
-            <!-- Remember Me & Forgot Password -->
-            <div class="flex items-center justify-between">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox"
-                        class="rounded-sm dark:bg-gray-900 border-2 border-luxury-300 dark:border-luxury-700 text-luxury-600 shadow-sm focus:ring-luxury-500 dark:focus:ring-luxury-600 dark:focus:ring-offset-gray-800"
-                        name="remember">
-                    <span class="ml-2 text-sm text-luxury-600/70 dark:text-luxury-400/70">Ingat saya</span>
-                </label>
-
-                @if (Route::has('password.request'))
-                    <a class="text-sm text-luxury-600 dark:text-luxury-400 hover:text-luxury-700 dark:hover:text-luxury-300 font-medium transition-colors duration-200"
-                        href="{{ route('password.request') }}">
-                        Lupa kata sandi?
-                    </a>
-                @endif
+            <!-- Confirm Password -->
+            <div class="relative">
+                <x-input-label for="password_confirmation" :value="__('Konfirmasi Kata Sandi')"
+                    class="text-luxury-700 dark:text-luxury-300 absolute -top-2 left-3 bg-white dark:bg-gray-800 px-2 text-sm" />
+                
+                <x-text-input id="password_confirmation" class="block w-full p-4 border-2" 
+                    type="password" name="password_confirmation" required
+                    placeholder="Konfirmasi kata sandi" />
+                
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
             <div>
                 <x-primary-button
                     class="w-full justify-center p-4 text-base bg-gradient-to-r from-luxury-600 to-accent-600 hover:from-luxury-700 hover:to-accent-700">
-                    Masuk
+                    {{ __('Daftar') }}
                 </x-primary-button>
             </div>
 
@@ -69,17 +77,19 @@
                 </div>
                 <div class="relative flex justify-center text-sm">
                     <span class="px-2 bg-white dark:bg-gray-800 text-luxury-600/70 dark:text-luxury-400/70">
-                        Belum punya akun?
+                        Sudah punya akun?
                     </span>
                 </div>
             </div>
 
-            <div class="text-center">
-                <a href="{{ route('register') }}"
+            <div class="text-center space-y-3">
+                <!-- Login -->
+                <a href="{{ route('login') }}"
                     class="w-full inline-flex justify-center p-4 text-base font-semibold text-luxury-600 dark:text-luxury-400 border-2 border-luxury-300 dark:border-luxury-600 rounded-lg hover:bg-luxury-50 dark:hover:bg-luxury-900/50 transition-colors duration-200">
-                    Daftar sekarang
+                    Masuk
                 </a>
             </div>
+
         </form>
     </div>
 </x-guest-layout>
