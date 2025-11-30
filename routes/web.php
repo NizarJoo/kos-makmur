@@ -126,6 +126,7 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
@@ -135,5 +136,17 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 // Route untuk Rooms
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+// Hanya superadmin yang boleh melihat halaman ini
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+
+    Route::get('/verified', [\App\Http\Controllers\VerifiedController::class, 'index'])
+        ->name('verified.index');
+
+    Route::post('/verified/{kos}/accept', [\App\Http\Controllers\VerifiedController::class, 'accept'])
+        ->name('verified.accept');
+
+    Route::post('/verified/{kos}/reject', [\App\Http\Controllers\VerifiedController::class, 'reject'])
+        ->name('verified.reject');
+});
 
 require __DIR__ . '/auth.php';
