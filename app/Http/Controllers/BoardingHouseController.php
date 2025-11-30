@@ -121,7 +121,7 @@ class BoardingHouseController extends Controller
         $boardingHouse->update($data);
 
         return redirect()
-            ->route('boarding-houses.show', $boardingHouse)
+            ->route('boarding-houses.index')
             ->with('success', 'Boarding house updated successfully.');
     }
 

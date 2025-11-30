@@ -9,11 +9,9 @@ use App\Http\Controllers\GuestBookingController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\BoardingHouseController;
-use App\Http\Controllers\AccountController;
 use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,21 +29,21 @@ Route::get('/', function () {
 
     $roomTypes = [
         [
-            'name' => 'Kos Avenger',
-            'description' => 'Kos nyaman untuk 1 keluarga',
-            'price' => Room::where('capacity', 2)->value('price_per_night') ?? 1000,
+            'name' => 'Deluxe Room',
+            'description' => 'Spacious room with city view',
+            'price' => Room::where('capacity', 2)->value('price_per_night') ?? 100.00,
             'image' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
         [
-            'name' => 'Kos Muslimah Ambarawa',
-            'description' => 'Kos ekslusif mahasiswi sultan',
-            'price' => Room::where('capacity', 3)->value('price_per_night') ?? 550,
+            'name' => 'Premium Suite',
+            'description' => 'Luxury suite with panoramic view',
+            'price' => Room::where('capacity', 3)->value('price_per_night') ?? 150.00,
             'image' => 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
         [
-            'name' => 'Kos Syahdana',
-            'description' => 'Kos strategis dekat kampus UM',
-            'price' => Room::where('capacity', 4)->value('price_per_night') ?? 100,
+            'name' => 'Royal Suite',
+            'description' => 'Ultimate luxury experience',
+            'price' => Room::where('capacity', 4)->value('price_per_night') ?? 200.00,
             'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
         ],
     ];
@@ -79,14 +77,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Profile Biodata routes
-    Route::get('/profile', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [UserProfileController::class, 'update'])->name('profile.update');
-
-    // Account routes (email, password, delete account)
-    Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
-    Route::patch('/account', [AccountController::class, 'update'])->name('account.update');
-    Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 });
 
 /*
@@ -116,8 +106,21 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
     // Boarding Houses Management (Policy handles admin-only access)
     Route::resource('boarding-houses', BoardingHouseController::class);
 
+    // Nested Rooms Management (inside boarding house)
+    Route::prefix('boarding-houses/{boarding_house}')->name('boarding-houses.')->group(function () {
+        Route::resource('rooms', RoomController::class)->except(['index', 'show']);
+    });
+
     // Legacy Routes (Old Hotel Management System)
-    Route::resource('rooms', RoomController::class);
+    Route::resource('rooms', RoomController::class)->names([
+        'index' => 'legacy.rooms.index',
+        'create' => 'legacy.rooms.create',
+        'store' => 'legacy.rooms.store',
+        'show' => 'legacy.rooms.show',
+        'edit' => 'legacy.rooms.edit',
+        'update' => 'legacy.rooms.update',
+        'destroy' => 'legacy.rooms.destroy',
+    ]);
     Route::resource('guests', GuestController::class);
     Route::resource('bookings', BookingController::class);
     Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
@@ -128,5 +131,9 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
+
+// Route untuk Rooms
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
 
 require __DIR__ . '/auth.php';
