@@ -96,6 +96,10 @@ class BoardingHouse extends Model
     {
         return $query->where('is_verified', true);
     }
+    public function scopePendingVerification($query)
+    {
+        return $query->where('is_verified', false);
+    }
 
     /**
      * Scope to only show boarding houses owned by specific admin.

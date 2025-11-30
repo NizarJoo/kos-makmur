@@ -62,7 +62,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-luxury-100 text-luxury-800 dark:bg-luxury-900 dark:text-luxury-200">
-                                                {{ $district->kos_count }} kos
+                                                {{ $district->boarding_houses_count ?? 0 }} kos
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -81,9 +81,8 @@
 
                                                 {{-- Delete Button --}}
                                                 <button type="button" onclick="confirmDelete({{ $district->id }})"
-                                                    class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors"
-                                                    @if ($district->kos_count > 0) disabled
-                                                    class="opacity-50 cursor-not-allowed" @endif>
+                                                    class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-md transition-colors {{ ($district->boarding_houses_count ?? 0) > 0 ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                                    @if (($district->boarding_houses_count ?? 0) > 0) disabled @endif>
                                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
