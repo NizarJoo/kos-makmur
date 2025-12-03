@@ -38,7 +38,8 @@
                             <x-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
                                 {{ __('Verifikasi Kos') }}
                             </x-nav-link>
-                            <x-nav-link :href="route('superadmin.approvals')" :active="request()->routeIs('superadmin.approvals')">
+                            <x-nav-link :href="route('superadmin.approvals')"
+                                :active="request()->routeIs('superadmin.approvals')">
                                 {{ __('Admin Approvals') }}
                             </x-nav-link>
                         @endif
@@ -49,19 +50,19 @@
                                 :active="request()->routeIs('boarding-houses.*')">
                                 {{ __('Boarding Houses') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('staff.bookings.index')" :active="request()->routeIs('staff.bookings.*')">
+                                {{ __('Bookings') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*')">
+                                {{ __('Guests') }}
+                            </x-nav-link>
                         @endif
-
-                        <x-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
-                            {{ __('Bookings') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*')">
-                            {{ __('Guests') }}
-                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Beranda') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('guest.boarding-houses.index')" :active="request()->routeIs('guest.boarding-houses.*')">
+                        <x-nav-link :href="route('guest.boarding-houses.index')"
+                            :active="request()->routeIs('guest.boarding-houses.*')">
                             {{ __('List Kos') }}
                         </x-nav-link>
                         <x-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">
@@ -157,7 +158,8 @@
                     <x-responsive-nav-link :href="route('verification.index')" :active="request()->routeIs('verification.*')">
                         {{ __('Verifikasi Kos') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('superadmin.approvals')" :active="request()->routeIs('superadmin.approvals')">
+                    <x-responsive-nav-link :href="route('superadmin.approvals')"
+                        :active="request()->routeIs('superadmin.approvals')">
                         {{ __('Admin Approvals') }}
                     </x-responsive-nav-link>
                 @endif
@@ -165,17 +167,21 @@
                 <x-responsive-nav-link :href="route('legacy.rooms.index')" :active="request()->routeIs('rooms.*')">
                     {{ __('Rooms') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('bookings.index')" :active="request()->routeIs('bookings.*')">
-                    {{ __('Bookings') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*')">
-                    {{ __('Guests') }}
-                </x-responsive-nav-link>
+                @if (auth()->user()->isAdmin())
+                    <x-responsive-nav-link :href="route('staff.bookings.index')"
+                        :active="request()->routeIs('staff.bookings.*')">
+                        {{ __('Bookings') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*')">
+                        {{ __('Guests') }}
+                    </x-responsive-nav-link>
+                @endif
             @else
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Beranda') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guest.boarding-houses.index')" :active="request()->routeIs('guest.boarding-houses.*')">
+                <x-responsive-nav-link :href="route('guest.boarding-houses.index')"
+                    :active="request()->routeIs('guest.boarding-houses.*')">
                     {{ __('List Kos') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('booking.index')" :active="request()->routeIs('booking.index')">

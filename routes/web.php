@@ -11,6 +11,7 @@ use App\Http\Controllers\GuestPageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\BoardingHouseController;
+use App\Http\Controllers\StaffBookingController;
 use App\Models\BoardingHouse;
 use App\Models\Room;
 use App\Models\Guest;
@@ -96,7 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return redirect()->route('staff.dashboard');
 
         }
-        
+
         $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(6)->get();
         return view('guest.dashboard_new', compact('boardingHouses'));
 
@@ -108,16 +109,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-        // Guest Bookings
+    // Guest Bookings
 
 
 
-        Route::get('/my-bookings', [BookingController::class, 'index'])->name('booking.index');
+    Route::get('/my-bookings', [BookingController::class, 'index'])->name('booking.index');
 
 
 
-        Route::get('/my-bookings/{booking}', [BookingController::class, 'show'])->name('guest.bookings.show');
-        Route::put('/my-bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('guest.bookings.cancel');
+    Route::get('/my-bookings/{booking}', [BookingController::class, 'show'])->name('guest.bookings.show');
+    Route::put('/my-bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('guest.bookings.cancel');
 
 
 
@@ -256,11 +257,15 @@ Route::middleware(['auth', 'verified', 'staff'])->group(function () {
 
     ]);
 
+    // Staff Bookings Management
+    Route::prefix('staff/bookings')->name('staff.bookings.')->group(function () {
+        Route::get('/', [StaffBookingController::class, 'index'])->name('index');
+        Route::post('/{booking}/approve', [StaffBookingController::class, 'approve'])->name('approve');
+        Route::post('/{booking}/reject', [StaffBookingController::class, 'reject'])->name('reject');
+    });
+
     Route::resource('guests', GuestController::class);
 
-    Route::resource('bookings', BookingController::class)->except(['create', 'store']);
-
-    Route::patch('/bookings/{booking}/checkout', [BookingController::class, 'checkout'])->name('bookings.checkout');
     Route::get('/bookings/get-available-rooms/{boardingHouseId}', [BookingController::class, 'getAvailableRooms'])->name('bookings.get_available_rooms');
 
 });
@@ -305,3 +310,4 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
 require __DIR__ . '/auth.php';
 
+Route::get('/legacy/rooms', [RoomController::class, 'index'])->name('legacy.rooms.index');

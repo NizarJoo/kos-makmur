@@ -40,10 +40,10 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         // Parse dates and calculate duration_months early
-        $checkInDate = \Carbon\Carbon::parse($request->input('check_in_date'));
-        $checkOutDate = \Carbon\Carbon::parse($request->input('check_out_date'));
+        $startDate = \Carbon\Carbon::parse($request->input('start_date'));
+        $endDate = \Carbon\Carbon::parse($request->input('end_date'));
 
-        $totalDays = $checkInDate->diffInDays($checkOutDate);
+        $totalDays = $startDate->diffInDays($endDate);
         $durationMonths = (int) ceil($totalDays / 30);
 
         // Merge duration_months into the request for validation
@@ -51,8 +51,8 @@ class BookingController extends Controller
 
         $validated = $request->validate([
             'room_id' => 'required|exists:rooms,id',
-            'check_in_date' => 'required|date|after:today',
-            'check_out_date' => 'required|date|after:check_in_date',
+            'start_date' => 'required|date|after:today',
+            'end_date' => 'required|date|after:start_date',
             'duration_months' => 'required|integer|min:1', // Now validates against merged request data
             'notes' => 'nullable|string|max:500',
         ]);
@@ -83,8 +83,8 @@ class BookingController extends Controller
         // ===== PERHITUNGAN SESUAI SRS =====
         // Duration months is already calculated and merged into $request and $validated
 
-        // total_amount: room.price_per_month * duration_months
-        $totalAmount = $room->price_per_month * $durationMonths;
+        // total_price: room.price_per_month * duration_months
+        $totalPrice = $room->price_per_month * $durationMonths;
 
         // Generate booking code
         $bookingCode = 'BOOK-' . date('Ymd') . '-' . strtoupper(Str::random(5));
@@ -96,10 +96,10 @@ class BookingController extends Controller
             'guest_id' => auth()->id(),
             'room_id' => $room->id,
             'boarding_house_id' => $room->boarding_house_id,
-            'check_in_date' => $validated['check_in_date'],
-            'check_out_date' => $validated['check_out_date'],
+            'start_date' => $validated['start_date'],
+            'end_date' => $validated['end_date'],
             'duration_months' => $durationMonths,
-            'total_amount' => $totalAmount, // Changed from totalPrice
+            'total_price' => $totalPrice, 
             'status' => 'pending',
             'notes' => $validated['notes'] ?? null,
         ]);

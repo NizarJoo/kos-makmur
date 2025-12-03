@@ -12,15 +12,23 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            // Tambah kolom dengan NULLABLE dulu, nanti kita isi
-            $table->string('booking_code', 50)->nullable()->after('id');
-            $table->integer('duration_months')->nullable()->after('check_out_date');
-            $table->text('notes')->nullable()->after('status');
-            $table->text('rejection_reason')->nullable()->after('notes');
+            // Tambah kolom dengan pengecekan
+            if (!Schema::hasColumn('bookings', 'booking_code')) {
+                $table->string('booking_code', 50)->nullable()->after('id');
+            }
+            if (!Schema::hasColumn('bookings', 'duration_months')) {
+                $table->integer('duration_months')->nullable()->after('check_out_date');
+            }
+            if (!Schema::hasColumn('bookings', 'notes')) {
+                $table->text('notes')->nullable()->after('status');
+            }
+            if (!Schema::hasColumn('bookings', 'rejection_reason')) {
+                $table->text('rejection_reason')->nullable()->after('notes');
+            }
         });
 
-        // Isi data untuk booking yang sudah ada
-        $bookings = DB::table('bookings')->get();
+        // Isi data untuk booking yang sudah ada (cek dulu ada data atau tidak)
+        $bookings = DB::table('bookings')->whereNull('booking_code')->get();
 
         foreach ($bookings as $booking) {
             // Generate booking_code untuk data lama
@@ -41,14 +49,35 @@ return new class extends Migration {
         }
 
         // Sekarang baru ubah booking_code jadi NOT NULL dan UNIQUE
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->string('booking_code', 50)->nullable(false)->unique()->change();
-            $table->integer('duration_months')->nullable(false)->change();
-        });
+        if (Schema::hasColumn('bookings', 'booking_code')) {
+            // Cek apakah index sudah ada
+            $indexExists = false;
+            try {
+                $indexes = DB::select("PRAGMA index_list('bookings')");
+                foreach ($indexes as $index) {
+                    if ($index->name === 'bookings_booking_code_unique') {
+                        $indexExists = true;
+                        break;
+                    }
+                }
+            } catch (\Exception $e) {
+                // Ignore error
+            }
 
-        // Update enum status (untuk SQLite, kita skip ini dulu karena ribet)
-        // Kalau pakai MySQL, uncomment baris di bawah:
-        // DB::statement("ALTER TABLE bookings MODIFY status ENUM('pending', 'approved', 'rejected', 'active', 'finished', 'cancelled') NOT NULL DEFAULT 'pending'");
+            Schema::table('bookings', function (Blueprint $table) use ($indexExists) {
+                if (!$indexExists) {
+                    $table->string('booking_code', 50)->nullable(false)->unique()->change();
+                } else {
+                    $table->string('booking_code', 50)->nullable(false)->change();
+                }
+            });
+        }
+
+        if (Schema::hasColumn('bookings', 'duration_months')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->integer('duration_months')->nullable(false)->change();
+            });
+        }
     }
 
     /**
@@ -57,7 +86,13 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn(['booking_code', 'duration_months', 'notes', 'rejection_reason']);
+            $columnsToCheck = ['booking_code', 'duration_months', 'notes', 'rejection_reason'];
+
+            foreach ($columnsToCheck as $column) {
+                if (Schema::hasColumn('bookings', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };
