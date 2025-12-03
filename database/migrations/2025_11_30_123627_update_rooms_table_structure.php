@@ -8,8 +8,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            // Drop columns lama yang gak dipake
-            $table->dropColumn([
+            // Drop columns lama yang gak dipake (dengan pengecekan)
+            $columnsToCheck = [
                 'capacity',
                 'price_per_night',
                 'status',
@@ -17,44 +17,62 @@ return new class extends Migration {
                 'gallery_images',
                 'room_type',
                 'amenities'
-            ]);
-        });
+            ];
 
-        // Schema::table('rooms', function (Blueprint $table) {
-        //     // Tambah columns baru sesuai sistem kost
-        //     // $table->foreignId('boarding_house_id')->constrained()->onDelete('cascade');
-        //     // $table->string('type_name', 100);
-        //     // $table->decimal('price_per_month', 10, 2);
-        //     // $table->integer('availability'); // total units
-        //     // $table->integer('available_units')->default(0); // units yang masih kosong
-        //     // $table->string('size', 50)->nullable();
-        //     // $table->string('image_path')->nullable();
-        // });
+            foreach ($columnsToCheck as $column) {
+                if (Schema::hasColumn('rooms', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
+        });
     }
 
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->dropForeign(['boarding_house_id']);
-            $table->dropColumn([
-                'boarding_house_id',
-                'type_name',
-                'price_per_month',
-                'availability',
-                'available_units',
-                'size',
-                'image_path'
-            ]);
+            // Cek foreign key sebelum drop
+            if (Schema::hasColumn('rooms', 'boarding_house_id')) {
+                try {
+                    $table->dropForeign(['boarding_house_id']);
+                } catch (\Exception $e) {
+                    // Foreign key tidak ada, skip
+                }
+
+                $table->dropColumn([
+                    'boarding_house_id',
+                    'type_name',
+                    'price_per_month',
+                    'availability',
+                    'available_units',
+                    'size',
+                    'image_path'
+                ]);
+            }
         });
 
         Schema::table('rooms', function (Blueprint $table) {
-            $table->integer('capacity');
-            $table->decimal('price_per_night', 10, 2);
-            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
-            $table->string('featured_image')->nullable();
-            $table->json('gallery_images')->nullable();
-            $table->string('room_type')->nullable();
-            $table->json('amenities')->nullable();
+            // Restore kolom lama
+            if (!Schema::hasColumn('rooms', 'capacity')) {
+                $table->integer('capacity')->nullable();
+            }
+            if (!Schema::hasColumn('rooms', 'price_per_night')) {
+                $table->decimal('price_per_night', 10, 2)->nullable();
+            }
+            if (!Schema::hasColumn('rooms', 'status')) {
+                $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
+            }
+            if (!Schema::hasColumn('rooms', 'featured_image')) {
+                $table->string('featured_image')->nullable();
+            }
+            if (!Schema::hasColumn('rooms', 'gallery_images')) {
+                $table->json('gallery_images')->nullable();
+            }
+            if (!Schema::hasColumn('rooms', 'room_type')) {
+                $table->string('room_type')->nullable();
+            }
+            if (!Schema::hasColumn('rooms', 'amenities')) {
+                $table->json('amenities')->nullable();
+            }
         });
     }
 };

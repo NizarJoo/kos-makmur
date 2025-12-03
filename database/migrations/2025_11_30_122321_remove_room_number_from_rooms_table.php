@@ -8,21 +8,28 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            // Drop unique index dulu sebelum drop column
-            $table->dropUnique(['room_number']);
-        });
-
-        Schema::table('rooms', function (Blueprint $table) {
-            // Baru drop column-nya
-            $table->dropColumn('room_number');
+            // Cek apakah kolom room_number ada
+            if (Schema::hasColumn('rooms', 'room_number')) {
+                // Drop unique index dulu (dengan pengecekan)
+                try {
+                    $table->dropUnique(['room_number']);
+                } catch (\Exception $e) {
+                    // Index tidak ada, skip
+                }
+                
+                // Drop column
+                $table->dropColumn('room_number');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->string('room_number')->nullable();
-            $table->unique('room_number');
+            if (!Schema::hasColumn('rooms', 'room_number')) {
+                $table->string('room_number')->nullable();
+                $table->unique('room_number');
+            }
         });
     }
 };

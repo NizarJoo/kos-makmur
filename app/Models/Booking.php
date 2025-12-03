@@ -16,20 +16,20 @@ class Booking extends Model
         'guest_id',
         'room_id',
         'boarding_house_id',
-        'check_in_date',
-        'check_out_date',
+        'start_date',
+        'end_date',
         'duration_months',
-        'total_amount', // Changed from total_price
+        'total_price',
         'status',
         'notes',
         'rejection_reason',
     ];
 
     protected $casts = [
-        'check_in_date' => 'date',
-        'check_out_date' => 'date',
+        'start_date' => 'date',
+        'end_date' => 'date',
         'duration_months' => 'integer',
-        'total_amount' => 'decimal:2', // Changed from total_price
+        'total_price' => 'decimal:2',
     ];
 
     /**
@@ -127,6 +127,6 @@ class Booking extends Model
      */
     public function getFormattedPriceAttribute(): string
     {
-        return 'Rp ' . number_format($this->total_amount, 0, ',', '.');
+        return 'Rp ' . number_format($this->total_price, 0, ',', '.');
     }
 }
