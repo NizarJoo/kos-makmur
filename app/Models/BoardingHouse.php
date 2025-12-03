@@ -65,7 +65,10 @@ class BoardingHouse extends Model
     {
         return $this->hasMany(Room::class, 'boarding_house_id');
     }
-
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
     /**
      * Get the type label.
      */
