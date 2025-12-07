@@ -1,391 +1,363 @@
-# Hostel Management System (HMS)
+# E-Kost - Sistem Manajemen Kos Modern
 
 [![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/1yakub/Hostel-Management-System-HMS-/laravel.yml?style=for-the-badge&logo=github&logoColor=white&label=Tests)](https://github.com/1yakub/Hostel-Management-System-HMS-/actions/workflows/laravel.yml)
-[![Deployment](https://img.shields.io/github/actions/workflow/status/1yakub/Hostel-Management-System-HMS-/deploy.yml?style=for-the-badge&logo=rocket&logoColor=white&label=Deploy)](https://github.com/1yakub/Hostel-Management-System-HMS-/actions/workflows/deploy.yml)
-
 ## 🚀 Live Demo
 
-**✨ [View Live Demo](https://hms.yakub.website/) ✨**
-
-> **🌐 Custom Domain:** `hms.yakub.website` (Professional subdomain)  
-> **🔒 SSL Certificate:** HTTPS enabled for secure access
+**✨ [View Live Demo](http://daddykos.web.id/) ✨**
 
 ### Demo Credentials:
-- **Staff Login:** `staff@example.com` / `password`  
-- **Guest Login:** `guest@example.com` / `password`
-- **Test User:** `test@example.com` / `password`
+
+-   **Superadmin Login:** `superadmin@ekost.com` / `password`
+-   **Admin Login:** `admin@ekost.com` / `password`
+-   **User Login:** `pengguna@ekost.com` / `password`
 
 ---
 
-A comprehensive web-based hostel management solution developed during an internship at Varygen Corp Ltd. This system streamlines hostel operations through automated booking management, room tracking, and integrated payment processing.
+Sistem manajemen kos berbasis web yang komprehensif untuk mempermudah pengelolaan properti kos, booking online, dan pembayaran. Proyek ini dikembangkan sebagai bagian dari tugas akhir di Universitas Negeri Malang.
 
 ## 🏢 Project Overview
 
-**Developer:** Md Yakub Hossain  
-**Student ID:** 1830968  
-**Institution:** Independent University, Bangladesh  
-**Company:** Varygen Corp Ltd  
-**Duration:** Spring 2025 (3 months)  
-**Academic Supervisor:** Razib Hayat Khan, Ph.D.  
-**Industry Supervisor:** Bimasha Zaman (CEO, Varygen Corp Ltd)
+**Developer:**
+
+-   Imron
+-   Muhammad Faiz Alfarisi
+-   Muhammad Naufal Rio Ramadhan
+-   Muhammad Nizar Joenantama
+
+**Institusi:** Universitas Negeri Malang  
+**Fakultas:** Fakultas MIPA  
+**Periode:** November 2024 (1 bulan)  
+**Dosen Pembimbing:** Denis Eka Cahyani, S.Kom., M.Kom.
 
 ## 📋 Table of Contents
 
-- [Live Demo](#-live-demo)
-- [Features](#-features)
-- [Technology Stack](#️-technology-stack)
-- [System Architecture](#️-system-architecture)
-- [Prerequisites](#-prerequisites)
-- [Installation](#-installation)
-- [Deployment](#-deployment)
-- [User Roles & Access](#-user-roles--access)
-- [Testing](#-testing)
-- [Performance Metrics](#-performance-metrics)
-- [Security Features](#-security-features)
-- [Screenshots](#-screenshots)
-- [Future Enhancements](#-future-enhancements)
-- [Contact](#-contact)
+-   [Live Demo](#-live-demo)
+-   [Fitur](#-fitur)
+-   [Technology Stack](#️-technology-stack)
+-   [Arsitektur Sistem](#️-arsitektur-sistem)
+-   [Prerequisites](#-prerequisites)
+-   [Instalasi](#-instalasi)
+-   [User Roles & Akses](#-user-roles--akses)
+-   [Testing](#-testing)
+-   [Security Features](#-security-features)
+-   [Future Enhancements](#-future-enhancements)
+-   [Contact](#-contact)
 
-## ✨ Features
+## ✨ Fitur
 
 ### 🔐 Authentication & Authorization
-- Secure user authentication with Laravel Breeze
-- Role-based access control (Admin, Staff, Guest)
-- Password reset and email verification
-- Session management with timeout
 
-### 🏠 Room Management
-- Real-time room inventory tracking
-- Dynamic pricing and availability updates
-- Room maintenance status management
-- Amenities tracking through JSON storage
-- Room type categorization
+-   Sistem autentikasi yang aman dengan Laravel Breeze
+-   Role-based access control (Superadmin, Admin, User)
+-   Password reset dan email verification
+-   Session management dengan timeout
 
-### 📅 Booking System
-- Advanced booking management with date validation
-- Check-in/check-out processing
-- Room availability checking
-- Booking modification and cancellation
-- Special requests handling
+### 🏠 Manajemen Properti Kos
 
-### 💳 Payment Processing
-- Secure payment tracking and verification
-- Automated invoice generation
-- Payment history maintenance
-- Financial transaction reporting
+-   CRUD kos dan kamar oleh Admin
+-   Upload gambar kos dan kamar
+-   Pengelolaan tipe kos (Putra, Putri, Campur)
+-   Sistem verifikasi kos oleh Superadmin
+-   Pengelolaan fasilitas kamar
+-   Real-time tracking ketersediaan kamar
 
-### 👥 Guest Management
-- Guest registration and profiling
-- Document verification system
-- Contact information management
-- Guest history tracking
+### 📅 Sistem Booking Online
 
-### 📊 Reporting & Analytics
-- Occupancy and revenue reports
-- Performance metrics dashboard
-- Business intelligence features
-- Real-time operational statistics
+-   Pencarian dan filtering kos berdasarkan lokasi, tipe, dan harga
+-   Detail properti dengan informasi lengkap kamar
+-   Pengajuan booking oleh User
+-   Sistem approval booking oleh Admin
+-   Validasi ketersediaan kamar otomatis
+-   Perhitungan otomatis durasi dan total harga
+-   Notifikasi status booking via email
+
+### 💳 Manajemen Pembayaran
+
+-   Upload bukti pembayaran oleh User
+-   Verifikasi pembayaran oleh Admin
+-   Generate invoice otomatis
+-   Tracking history pembayaran
+-   Update status booking berdasarkan pembayaran
+
+### 👥 Manajemen Pengguna
+
+-   Registrasi multi-role (Admin dan User)
+-   Profil pengguna dengan foto dan informasi kontak
+-   Manajemen data pribadi
+
+### 📊 Dashboard & Reporting
+
+-   **Dashboard Admin:**
+    -   Statistik booking pending
+    -   Laporan okupansi kamar
+    -   Monitoring pembayaran
+-   **Dashboard Superadmin:**
+    -   Total kos menunggu verifikasi
+    -   Total user platform
+    -   Statistik booking aktif
+    -   Overview data platform
+
+### 🎫 Sistem Ticketing
+
+-   Pengajuan tiket bantuan oleh User
+-   Manajemen tiket oleh Admin
+-   Status tracking tiket
+-   Response dan resolusi tiket
 
 ## 🛠️ Technology Stack
 
 ### Backend
-- **Framework:** Laravel 11.x
-- **Language:** PHP 8.2+
-- **Database:** MySQL/SQLite
-- **ORM:** Eloquent
-- **Authentication:** Laravel Breeze
+
+-   **Framework:** Laravel 11.x
+-   **Language:** PHP 8.2+
+-   **Database:** MySQL 5.7+
+-   **ORM:** Eloquent
+-   **Authentication:** Laravel Breeze
 
 ### Frontend
-- **Markup:** HTML5
-- **Styling:** Tailwind CSS with custom luxury theme
-- **Scripting:** JavaScript, Alpine.js
-- **Build Tool:** Vite
-- **Responsive Design:** Mobile-first approach
+
+-   **Markup:** HTML5, Blade Templates
+-   **Styling:** Tailwind CSS
+-   **Scripting:** JavaScript, Alpine.js
+-   **Build Tool:** Vite
+-   **Responsive Design:** Mobile-first approach
 
 ### Development Tools
-- **Dependency Management:** Composer, npm
-- **Version Control:** Git
-- **Testing:** PHPUnit
-- **CI/CD:** GitHub Actions (auto-testing and deployment)
-- **Code Standards:** PSR-12
 
-## 🏗️ System Architecture
+-   **Dependency Management:** Composer, npm
+-   **Version Control:** Git
+-   **Testing:** PHPUnit/Pest
+-   **Code Standards:** PSR-12
 
-The HMS follows a modern MVC architecture pattern:
+## 🏗️ Arsitektur Sistem
 
-- **Model Layer:** Database interactions and business logic using Eloquent ORM
-- **View Layer:** Blade templates with responsive Tailwind CSS components
-- **Controller Layer:** RESTful controllers for request handling
+Sistem E-Kost mengikuti arsitektur MVC (Model-View-Controller):
+
+-   **Model Layer:** Interaksi database dan business logic menggunakan Eloquent ORM
+-   **View Layer:** Blade templates dengan komponen Tailwind CSS responsif
+-   **Controller Layer:** RESTful controllers untuk handling request
 
 ### Key Design Patterns
-- MVC (Model-View-Controller)
-- Repository Pattern through Eloquent
-- Middleware Pattern for authentication
-- Dependency Injection via Laravel's service container
+
+-   MVC (Model-View-Controller)
+-   Repository Pattern melalui Eloquent
+-   Middleware Pattern untuk autentikasi dan otorisasi
+-   Role-Based Access Control (RBAC)
+-   Soft Delete untuk data integrity
+
+### Database Schema (MVP)
+
+Sistem menggunakan 12 tabel utama:
+
+-   `users` - Data pengguna multi-role
+-   `user_profiles` - Profil detail pengguna
+-   `kos` - Data properti kos
+-   `kamar` - Data kamar kos
+-   `bookings` - Data booking
+-   `payments` - Data pembayaran
+-   `invoices` - Invoice pembayaran
+-   `tickets` - Tiket support
+-   `district` - Data kecamatan
+-   `fasilitas` - Master data fasilitas
+-   `kamar_fasilitas` - Relasi kamar dan fasilitas
 
 ## 📋 Prerequisites
 
-- PHP >= 8.2
-- Composer
-- Node.js & npm
-- MySQL >= 5.7 (or SQLite for development)
-- Web server (Apache/Nginx)
+-   PHP >= 8.2
+-   Composer
+-   Node.js & npm
+-   MySQL >= 5.7
+-   Web server (Apache/Nginx)
 
-## 🚀 Installation
+## 🚀 Instalasi
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/1yakub/Hostel-Management-System-HMS-.git
-   cd Hostel-Management-System-HMS-
-   ```
+1. **Clone repository**
+
+    ```bash
+    git clone https://github.com/NizarJoo/kos-makmur.git
+    cd kos-makmur
+    ```
 
 2. **Install PHP dependencies**
-   ```bash
-   composer install
-   ```
+
+    ```bash
+    composer install
+    ```
 
 3. **Install Node.js dependencies**
-   ```bash
-   npm install
-   ```
 
-4. **Environment setup**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
+    ```bash
+    npm install
+    ```
 
-5. **Configure database**
-   
-   For MySQL:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=hostel_management
-   DB_USERNAME=your_username
-   DB_PASSWORD=your_password
-   ```
-   
-   For SQLite (default):
-   ```env
-   DB_CONNECTION=sqlite
-   DB_DATABASE=/absolute/path/to/database/database.sqlite
-   ```
+4. **Setup environment**
 
-6. **Run migrations and seeders**
-   ```bash
-   php artisan migrate --seed
-   ```
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+5. **Konfigurasi database**
+
+    Edit file `.env`:
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=ekost_db
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+    ```
+
+6. **Jalankan migration dan seeder**
+
+    ```bash
+    php artisan migrate --seed
+    ```
 
 7. **Build frontend assets**
-   ```bash
-   npm run build
-   ```
 
-8. **Start the development server**
-   ```bash
-   php artisan serve
-   ```
+    ```bash
+    npm run build
+    ```
 
-Visit `http://localhost:8000` to access the application.
+8. **Jalankan development server**
+    ```bash
+    php artisan serve
+    ```
 
-## 🚀 Deployment
+Buka browser dan akses `http://localhost:8000`
 
-This project includes automatic deployment to production. When you push to the main branch:
+## 👤 User Roles & Akses
 
-1. **Tests run automatically** (25 tests, takes ~3 minutes)
-2. **If tests pass**, the code deploys to the live server automatically
-3. **Website updates** without any manual work
+### 🔴 Superadmin
 
-The deployment handles composer updates, asset building, database migrations, and server restart. Pretty neat for a student project! 
+-   Manajemen master data (fasilitas, kecamatan)
+-   Verifikasi properti kos yang didaftarkan Admin
+-   Monitoring kesehatan sistem
+-   Akses penuh ke seluruh data platform
+-   Dashboard statistik global
 
-**Live demo:** https://hms.yakub.website
+### 🟡 Admin (Pemilik Kos)
 
-### Manual Deployment (if needed)
-```bash
-# SSH to your server
-ssh user@your-server
+-   CRUD properti kos dan kamar milik sendiri
+-   Approval/reject booking
+-   Verifikasi pembayaran
+-   Generate invoice
+-   Response tiket support
+-   Dashboard statistik properti
 
-# Pull changes and update
-git pull origin main
-composer install --no-dev
-npm run build
-php artisan migrate --force
-```
+### 🟢 User (Pencari/Penghuni Kos)
 
-## 👤 User Roles & Access
-
-### Administrator
-- Complete system oversight
-- User management
-- Financial reporting
-- System configuration
-
-### Staff Members
-- Daily operational management
-- Guest service coordination
-- Room and facility maintenance
-- Booking management
-
-### Guests
-- Online booking and payment
-- Service requests
-- Stay management
-- Profile updates
+-   Pencarian dan filtering kos
+-   Pengajuan booking
+-   Upload bukti pembayaran
+-   Manajemen profil
+-   Submit tiket bantuan
+-   View riwayat booking dan pembayaran
 
 ## 🧪 Testing
 
-Run the test suite:
+Jalankan test suite:
+
 ```bash
 php artisan test
 ```
 
 ### Test Coverage
-- Authentication testing
-- Room management operations
-- Booking system functionality
-- Payment processing
-- API endpoints
 
-## 🔄 CI/CD Pipeline
-
-This project includes automated GitHub Actions workflow that:
-
-- ✅ **Runs automatically** on every push/pull request to `main`
-- 🐘 **Tests with PHP 8.2** and Laravel 11
-- 🗃️ **Uses SQLite** for fast testing
-- 📦 **Installs dependencies** (Composer & NPM)
-- 🧪 **Executes all tests** (PHPUnit/Pest)
-- 🎨 **Builds frontend assets** (Vite/Tailwind)
-- 📊 **Reports status** via GitHub badge
-
-**View CI/CD Results:** [GitHub Actions](https://github.com/1yakub/Hostel-Management-System-HMS-/actions)
-
-## 📊 Performance Metrics
-
-- **Response Time:** < 2 seconds average page load
-- **Concurrent Users:** Successfully tested with 100+ simultaneous users
-- **Database Operations:** < 100ms average query execution
-- **API Response:** < 200ms REST endpoint response time
+-   Authentication testing
+-   Room management operations
+-   Booking system functionality
+-   Payment processing
+-   RBAC authorization
 
 ## 🔒 Security Features
 
-- XSS protection
-- CSRF token verification
-- SQL injection prevention
-- Role-based access control
-- Data encryption for sensitive information
-- Session security with timeout
-
-## 📱 Screenshots
-
-<div align="center">
-
-### 🏠 Landing Page
-![HMS Landing Page](screenshots/landing_page.png)
-*Modern, responsive landing page with room showcase and booking interface*
-
-### 📊 Staff Dashboard
-![Staff Dashboard](screenshots/admin_dashboard.png)
-*Comprehensive dashboard with real-time statistics and quick actions*
-
-### 🏨 Room Management
-![Room Management](screenshots/room_management.png)
-*Intuitive room management interface with status tracking*
-
-### 📅 Booking Interface
-![Booking Interface](screenshots/booking_interface.png)
-*User-friendly booking system with date validation and room selection*
-
-</div>
+-   XSS protection
+-   CSRF token verification
+-   SQL injection prevention via Eloquent ORM
+-   Role-Based Access Control (RBAC)
+-   Password hashing dengan bcrypt/argon2
+-   Email verification
+-   Session security dengan timeout
+-   Input validation dan sanitization
+-   Soft delete untuk data integrity
 
 ## 🚧 Future Enhancements
 
 ### Technical Improvements
-- [ ] Mobile application development (iOS/Android)
-- [ ] AI-powered room recommendations
-- [ ] Advanced analytics with predictive modeling
-- [ ] Real-time chat support
-- [ ] Third-party booking platform integration
+
+-   [ ] Mobile application (Flutter/React Native)
+-   [ ] Payment gateway integration (Midtrans/Xendit)
+-   [ ] Real-time notification menggunakan WebSocket
+-   [ ] Advanced search dengan filter kompleks
+-   [ ] Export laporan ke PDF/Excel
+-   [ ] Integration dengan Google Maps API
+-   [ ] Chat system antara User dan Admin
 
 ### Business Features
-- [ ] Loyalty program integration
-- [ ] Dynamic pricing system
-- [ ] Multi-language support
-- [ ] Advanced reporting tools
 
-## 📄 Project Documentation
-
-For detailed technical documentation, please refer to the [full internship report](docs/1830968_hms_report.pdf).
-
-## 🤝 Contributing
-
-This project was developed as part of an academic internship. For educational purposes and learning:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+-   [ ] Review dan rating sistem
+-   [ ] Wishlist properti kos
+-   [ ] Reminder pembayaran otomatis
+-   [ ] Loyalty program untuk penghuni setia
+-   [ ] Multi-language support
+-   [ ] Sistem rekomendasi kos berbasis AI
 
 ## 📝 License
 
-This project is developed for academic and learning purposes. Please contact the author for usage permissions.
+Proyek ini dikembangkan untuk keperluan akademik. Untuk penggunaan lebih lanjut, silakan hubungi pengembang.
 
 ## 📞 Contact
 
 <div align="center">
 
-### 👨‍💻 **Md Yakub Hossain**
-*Computer Science & Engineering Student*  
-*Independent University, Bangladesh*
+### 👨‍💻 **Tim Pengembang**
 
-[![Email](https://img.shields.io/badge/Email-1830968@iub.edu.bd-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:1830968@iub.edu.bd)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-yakubhossain-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yakubhossain)
-[![GitHub](https://img.shields.io/badge/GitHub-1yakub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/1yakub)
+**Imron**  
+🔗 GitHub: [@imronbro](https://github.com/imronbro)
+
+**Muhammad Faiz Alfarisi**  
+🔗 GitHub: [@FaizAlfarisi](https://github.com/FaizAlfarisi)
+
+**Muhammad Naufal Rio Ramadhan**  
+🔗 GitHub: [@nfalrio](https://github.com/nfalrio)
+
+**Muhammad Nizar Joenantama**  
+🔗 GitHub: [@NizarJoo](https://github.com/NizarJoo)
 
 ---
 
-### 👨‍🏫 **Academic Supervisor**
-**Razib Hayat Khan, Ph.D.**  
-Associate Professor, CSE Department  
-Independent University, Bangladesh
+### 👨‍🏫 **Dosen Pembimbing**
+
+**Denis Eka Cahyani, S.Kom., M.Kom.**  
+Universitas Negeri Malang - Fakultas MIPA
 
 ---
-
-### 👩‍💼 **Industry Supervisor**
-**Bimasha Zaman**  
-CEO, Varygen Corp Ltd
 
 </div>
 
 ## 🙏 Acknowledgments
 
-- **Varygen Corp Ltd** for providing the internship opportunity
-- **Bimasha Zaman** (CEO, Varygen Corp Ltd) for industry guidance and mentorship
-- **Razib Hayat Khan, Ph.D.** for academic supervision and support
-- **Independent University, Bangladesh** for academic framework and resources
-- **Department of Computer Science & Engineering** for comprehensive education
-
-## 📈 Project Stats
-
-![GitHub repo size](https://img.shields.io/github/repo-size/1yakub/Hostel-Management-System-HMS-)
-![GitHub last commit](https://img.shields.io/github/last-commit/1yakub/Hostel-Management-System-HMS-)
-![GitHub issues](https://img.shields.io/github/issues/1yakub/Hostel-Management-System-HMS-)
-![GitHub stars](https://img.shields.io/github/stars/1yakub/Hostel-Management-System-HMS-)
+-   **Universitas Negeri Malang - Fakultas MIPA** untuk dukungan akademik
+-   **Denis Eka Cahyani, S.Kom., M.Kom.** untuk bimbingan dan arahan
+-   **Fakultas MIPA** untuk fasilitas dan resources
+-   Seluruh pihak yang telah membantu penyelesaian proyek ini
 
 ---
 
 <div align="center">
 
-**⭐ Star this repository if you found it helpful!**
+**⭐ Star repository ini jika bermanfaat!**
 
-*This system was developed as part of an undergraduate internship program and demonstrates the practical application of modern web development technologies in solving real-world business challenges.*
+_Sistem ini dikembangkan sebagai bagian dari tugas akhir dan mendemonstrasikan penerapan praktis teknologi web development modern dalam menyelesaikan permasalahan bisnis nyata._
+
+**© 2024 E-Kost Team - Universitas Negeri Malang**
 
 </div>
