@@ -2,80 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Room;
 use App\Models\Booking;
-use App\Models\Guest;
+use App\Models\Room;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today();
-        $thisMonth = Carbon::now()->startOfMonth();
-        $lastMonth = Carbon::now()->subMonth()->startOfMonth();
+        $user = Auth::user();
 
-        // Calculate monthly revenue
-        $currentMonthRevenue = Booking::whereMonth('created_at', $thisMonth->month)
-            ->where('status', '!=', 'cancelled')
-            ->sum('total_amount');
+        if ($user->isSuperadmin()) {
+            $stats = [
+                'totalUsers' => User::where('role', 'user')->count(),
+                'totalAdmins' => User::where('role', 'admin')->count(),
+                'totalBoardingHouses' => \App\Models\BoardingHouse::count(),
+                'pendingVerifications' => \App\Models\BoardingHouse::where('is_verified', false)->count(),
+            ];
+            $recentUsers = User::where('role', 'user')->latest()->take(5)->get();
+            return view('superadmin.dashboard', compact('stats', 'recentUsers'));
 
-        $lastMonthRevenue = Booking::whereMonth('created_at', $lastMonth->month)
-            ->where('status', '!=', 'cancelled')
-            ->sum('total_amount');
+        } elseif ($user->isAdmin()) {
+            $boardingHouseIds = $user->boardingHouses()->pluck('id');
 
-        // Calculate revenue growth
-        $revenueGrowth = $lastMonthRevenue > 0
-            ? round((($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100, 1)
-            : 0;
+            $totalRooms = Room::whereIn('boarding_house_id', $boardingHouseIds)->count();
+            $occupiedRooms = Room::whereIn('boarding_house_id', $boardingHouseIds)->where('status', 'occupied')->count();
 
-        // Calculate occupancy rate
-        $totalRooms = Room::count();
-        $occupiedRooms = Room::where('status', 'occupied')->count();
-        $occupancyRate = $totalRooms > 0 ? round(($occupiedRooms / $totalRooms) * 100) : 0;
+            $stats = [
+                'totalRooms' => $totalRooms,
+                'availableRooms' => Room::whereIn('boarding_house_id', $boardingHouseIds)->where('status', 'available')->count(),
+                'occupiedRooms' => $occupiedRooms,
+                'pendingBookings' => Booking::whereIn('boarding_house_id', $boardingHouseIds)->where('status', 'pending')->count(),
+                'activeBookings' => Booking::whereIn('boarding_house_id', $boardingHouseIds)->where('status', 'active')->count(),
+                'monthlyRevenue' => Booking::whereIn('boarding_house_id', $boardingHouseIds)
+                    ->where('status', '!=', 'cancelled')
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->sum('total_price'),
+                'occupancyRate' => $totalRooms > 0 ? round(($occupiedRooms / $totalRooms) * 100) : 0,
+            ];
 
-        $stats = [
-            'totalRooms' => $totalRooms,
-            'availableRooms' => Room::where('status', 'available')->count(),
-            'occupiedRooms' => $occupiedRooms,
-            'maintenanceRooms' => Room::where('status', 'maintenance')->count(),
-            'activeBookings' => Booking::where('status', 'active')->count(),
-            'totalGuests' => Guest::count(),
-            'monthlyRevenue' => $currentMonthRevenue,
-            'revenueGrowth' => $revenueGrowth,
-            'occupancyRate' => $occupancyRate,
-            'newGuestsThisMonth' => Guest::whereMonth('created_at', $thisMonth->month)->count(),
-            'checkoutsToday' => Booking::where('check_out_date', $today)->where('status', 'active')->count(),
-            'checkinsToday' => Booking::where('check_in_date', $today)->where('status', 'active')->count(),
-        ];
+            $pendingBookings = Booking::whereIn('boarding_house_id', $boardingHouseIds)
+                ->with(['room', 'user'])
+                ->where('status', 'pending')
+                ->latest()
+                ->take(5)
+                ->get();
 
-        $recentBookings = Booking::with(['room', 'user'])
+            return view('staff.dashboard', compact('stats', 'pendingBookings'));
+        }
+
+        // Fallback for any other roles or direct access, though middleware should prevent this.
+        return redirect('/');
+    }
+
+    public function dashboard()
+    {
+        // Load relasi room dengan eager loading
+        $bookings = auth()->user()->bookings()
+            ->with('room') // TAMBAHKAN INI
             ->latest()
             ->take(5)
-            ->get()
-            ->map(function ($booking) {
-                $booking->status_color = match ($booking->status) {
-                    'active' => 'green',
-                    'pending' => 'yellow',
-                    'completed' => 'gray',
-                    'cancelled' => 'red',
-                    default => 'gray'
-                };
-                return $booking;
-            });
+            ->get();
 
-        return view('dashboard', compact('stats', 'recentBookings'));
+        return view('guest.dashboard', compact('bookings'));
     }
-    public function dashboard()
-{
-    // Load relasi room dengan eager loading
-    $bookings = auth()->user()->bookings()
-        ->with('room') // TAMBAHKAN INI
-        ->latest()
-        ->take(5)
-        ->get();
-    
-    return view('guest.dashboard', compact('bookings'));
-}
 }

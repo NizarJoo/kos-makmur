@@ -187,7 +187,7 @@
                                             </a>
 
                                             @if (Route::has('register'))
-                                                <a href="{{ route('booking.create') }}"
+<a href="{{ route('login') }}"
                                                     class="inline-flex items-center px-4 py-2 bg-luxury-800 dark:bg-luxury-700 text-white font-medium rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
                                                     <span>Cari Kos</span>
                                                     <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,7 +263,7 @@
                                         </svg>
                                     </a> --}}
                                 @else
-                                    <a href="{{ route('register') }}"
+                                    <a href="{{ route('login') }}"
                                         class="inline-flex items-center px-8 py-3 bg-luxury-800 dark:bg-luxury-700 text-white font-semibold rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
                                         <span>Cari Kos</span>
                                         <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -529,7 +529,7 @@
                         <h2 class="font-serif text-lg font-bold text-luxury-800 dark:text-luxury-200">
                             {{ config('app.name') }}
                         </h2>
-                        <p class="text-xs text-luxury-600 dark:text-luxury-400">Luxury Hotel & Resort</p>
+                        <p class="text-xs text-luxury-600 dark:text-luxury-400">Papikos Malang</p>
                     </div>
                 </div>
                 
@@ -576,7 +576,7 @@
                         </a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('booking.create') }}"
+                            <a href="{{ route('login') }}"
                                 class="block px-4 py-3 mx-4 mt-2 bg-luxury-800 dark:bg-luxury-700 text-white text-center font-semibold rounded-lg hover:bg-luxury-900 dark:hover:bg-luxury-600 transition-colors shadow-sm">
                                 Cari Kos
                             </a>

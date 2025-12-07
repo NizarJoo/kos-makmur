@@ -38,6 +38,10 @@ class GuestPageController extends Controller
      */
     public function show(BoardingHouse $boarding_house)
     {
+        $boarding_house->load(['rooms' => function ($query) {
+            $query->where('available_units', '>', 0);
+        }, 'rooms.facilities', 'district', 'admin.profile']);
+
         return view('guest.boarding-houses.show', [
             'boardingHouse' => $boarding_house
         ]);

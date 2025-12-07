@@ -12,16 +12,6 @@ use Illuminate\View\View;
 class AccountController extends Controller
 {
     /**
-     * Display the user's account settings form.
-     */
-    public function edit(Request $request): View
-    {
-        return view('profile.account.index', [
-            'user' => Auth::user()
-        ]);
-    }
-
-    /**
      * Update the user's account information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -34,7 +24,7 @@ class AccountController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('account.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**

@@ -63,25 +63,40 @@
                     {{-- Rooms List --}}
                     <div class="mt-8">
                         <h3 class="text-xl font-semibold mb-4">Kamar Tersedia</h3>
-                        @if ($boardingHouse->rooms->where('status', 'available')->count() > 0)
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                @foreach ($boardingHouse->rooms->where('status', 'available') as $room)
-                                    <div
-                                        class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-luxury-200 dark:border-luxury-700">
-                                        <div class="p-4">
-                                            <h4 class="font-bold text-lg">{{ $room->name }}</h4>
-                                            <p class="text-sm text-gray-500 mb-2">Kapasitas: {{ $room->capacity }} orang</p>
-                                            <p class="text-lg font-semibold text-luxury-600 dark:text-luxury-300">
-                                                Rp {{ number_format($room->price_per_month, 0, ',', '.') }} / bulan
-                                            </p>
-                                            {{-- Add a booking button or link here if needed --}}
+                        @forelse ($boardingHouse->rooms as $room)
+                            @if ($loop->first)
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @endif
+
+                            <div
+                                class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-luxury-200 dark:border-luxury-700">
+                                <div class="relative h-48 bg-luxury-100 dark:bg-luxury-800">
+                                    @if ($room->image_path)
+                                        <img src="{{ asset('storage/' . $room->image_path) }}" alt="{{ $room->type_name }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-luxury-400 dark:text-luxury-600">
+                                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l-1-1a2 2 0 00-2.828 0L8 14m-2 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endif
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="font-bold text-lg">{{ $room->type_name ?? 'Kamar' }}</h4>
+                                    <p class="text-sm text-gray-500 mb-2">Kapasitas: {{ $room->capacity }} orang</p>
+                                    <p class="text-lg font-semibold text-luxury-600 dark:text-luxury-300">
+                                        Rp {{ number_format($room->price_per_month, 0, ',', '.') }} / bulan
+                                    </p>
+                                    <a href="{{ route('booking.create', ['room_id' => $room->id, 'boarding_house_id' => $boardingHouse->id]) }}" class="mt-4 inline-block bg-luxury-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-luxury-900">
+                                        Booking Sekarang
+                                    </a>
+                                </div>
                             </div>
-                        @else
+
+                            @if ($loop->last)
+                                </div>
+                            @endif
+                        @empty
                             <p class="text-gray-500">Tidak ada kamar tersedia saat ini.</p>
-                        @endif
+                        @endforelse
                     </div>
                 </div>
             </div>

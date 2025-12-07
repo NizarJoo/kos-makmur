@@ -2,32 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class GuestController extends Controller
 {
     public function index()
     {
-        $guests = Guest::all();
-        return view('guests.index', compact('guests'));
+        // This page might need to be refactored or removed as it lists a deprecated Guest model.
+        // For now, we will fetch users with the 'user' role.
+        $guests = User::where('role', 'user')->latest()->paginate(15);
+        return view('staff.guests.index', compact('guests'));
     }
 
     public function create()
     {
-        return view('guests.create');
+        return view('staff.guests.create');
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'id_number' => 'required|string|max:50|unique:guests'
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        Guest::create($validated);
-        return redirect()->route('guests.index')->with('success', 'Guest registered successfully');
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'user',
+        ]);
+
+        return redirect()->route('staff.bookings.index')->with('success', 'Akun tamu berhasil dibuat.');
     }
 
     public function show(Guest $guest)

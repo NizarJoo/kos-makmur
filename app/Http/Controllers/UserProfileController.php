@@ -34,6 +34,10 @@ class UserProfileController extends Controller
 
         $user = Auth::user();
 
+        // Update nama di tabel user
+        $user->name = $validated['full_name'];
+        $user->save();
+
         // Upload foto
         if ($request->hasFile('profile_picture')) {
             $validated['profile_picture'] = 
@@ -47,14 +51,17 @@ class UserProfileController extends Controller
     }
 
     /**
-     * Show the form for editing biodata profile.
+     * Show the form for editing the user's profile and account.
      */
     public function edit(): View
     {
         $user = Auth::user();
         $profile = $user->profile;
 
-        return view('profile.index', compact('profile'));
+        return view('profile.edit', [
+            'user' => $user,
+            'profile' => $profile
+        ]);
     }
 
     /**
@@ -72,6 +79,11 @@ class UserProfileController extends Controller
         ]);
 
         $user = Auth::user();
+
+        // Update nama di tabel users
+        $user->name = $validated['full_name'];
+        $user->save();
+
         $profile = $user->profile;
 
         // Upload foto baru
@@ -86,8 +98,8 @@ class UserProfileController extends Controller
                 $request->file('profile_picture')->store('profile-pictures', 'public');
         }
 
-        // Update
-        $profile->update($validated);
+        // Update atau buat profil
+        $user->profile()->updateOrCreate(['user_id' => $user->id], $validated);
 
         return redirect()->route('profile.edit')->with('status', 'Profil berhasil diperbarui!');
     }

@@ -44,7 +44,7 @@ class BookingController extends Controller
         $endDate = \Carbon\Carbon::parse($request->input('end_date'));
 
         $totalDays = $startDate->diffInDays($endDate);
-        $durationMonths = (int) ceil($totalDays / 30);
+        $durationMonths = (int) floor($totalDays / 30);
 
         // Merge duration_months into the request for validation
         $request->merge(['duration_months' => $durationMonths]);
@@ -55,6 +55,12 @@ class BookingController extends Controller
             'end_date' => 'required|date|after:start_date',
             'duration_months' => 'required|integer|min:1', // Now validates against merged request data
             'notes' => 'nullable|string|max:500',
+        ], [
+            'duration_months.min' => 'Minimal memesan kamar kos 1 bulan.',
+            'room_id.required' => 'Kamar harus dipilih.',
+            'start_date.required' => 'Tanggal mulai harus diisi.',
+            'end_date.required' => 'Tanggal berakhir harus diisi.',
+            'end_date.after' => 'Tanggal berakhir harus setelah tanggal mulai.',
         ]);
 
         $room = Room::with('boardingHouse')->findOrFail($validated['room_id']);
@@ -137,7 +143,7 @@ class BookingController extends Controller
 
         $booking->update(['status' => 'cancelled']);
 
-        return redirect()->route('guest.bookings.index')
+        return redirect()->route('booking.index')
             ->with('success', 'Booking cancelled successfully.');
     }
 
