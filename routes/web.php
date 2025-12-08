@@ -27,34 +27,15 @@ use App\Models\District;
 
 Route::get('/', function () {
     $stats = [
-        'roomCount' => BoardingHouse::count(),
-        'guestCount' => District::count(),
+        'boardingHouseCount' => BoardingHouse::verified()->count(),
+        'districtCount' => District::count(),
     ];
 
     $availableRooms = Room::where('status', 'available')->count();
 
-    $roomTypes = [
-        [
-            'name' => 'Deluxe Room',
-            'description' => 'Spacious room with city view',
-            'price' => Room::where('capacity', 2)->value('price_per_night') ?? 100.00,
-            'image' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-        ],
-        [
-            'name' => 'Premium Suite',
-            'description' => 'Luxury suite with panoramic view',
-            'price' => Room::where('capacity', 3)->value('price_per_night') ?? 150.00,
-            'image' => 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-        ],
-        [
-            'name' => 'Royal Suite',
-            'description' => 'Ultimate luxury experience',
-            'price' => Room::where('capacity', 4)->value('price_per_night') ?? 200.00,
-            'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-        ],
-    ];
+    $boardingHouses = BoardingHouse::where('is_verified', true)->latest()->take(3)->get();
 
-    return view('welcome', compact('stats', 'availableRooms', 'roomTypes'));
+    return view('welcome', compact('stats', 'availableRooms', 'boardingHouses'));
 });
 
 // Route untuk Rooms

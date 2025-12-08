@@ -45,7 +45,21 @@
         rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+     @php
+        $isProduction = app()->environment('production');
+        $manifestPath = $isProduction ? '../public_html/build/manifest.json' : public_path('build/manifest.json');
+    @endphp
+    
+    @if ($isProduction && file_exists($manifestPath))
+    @php
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+    @endphp
+        <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
+        <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+    @else
+        @viteReactRefresh
+        @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @endif
 
     <!-- Custom Styles -->
     <style>
@@ -285,14 +299,14 @@
                                 <div
                                     class="bg-white/90 dark:bg-gray-800/90 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                                     <div class="text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-2">
-                                        {{ $stats['roomCount'] ?? 0 }}+
+                                        {{ $stats['boardingHouseCount'] ?? 0 }}+
                                     </div>
                                     <p class="text-luxury-600 dark:text-luxury-400">Kost</p>
                                 </div>
                                 <div
                                     class="bg-white/90 dark:bg-gray-800/90 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                                     <div class="text-4xl font-bold text-luxury-800 dark:text-luxury-200 mb-2">
-                                        {{ $stats['guestCount'] ?? 0 }}+
+                                        {{ $stats['districtCount'] ?? 0 }}+
                                     </div>
                                     <p class="text-luxury-600 dark:text-luxury-400">Kecamatan</p>
                                 </div>
@@ -303,8 +317,8 @@
             </div>
         </div>
 
-        <!-- Room Types Section -->
-        @if ($roomTypes ?? null)
+        <!-- Boarding Houses Section -->
+        @if ($boardingHouses ?? null)
             <section class="relative py-20 bg-white dark:bg-gray-800" id="kospilihan">
                 <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
                     <div class="text-center mb-16">
@@ -317,24 +331,27 @@
                     </div>
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        @foreach ($roomTypes as $type)
+                        @foreach ($boardingHouses as $boardingHouse)
                             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
                                 <div class="aspect-w-16 aspect-h-9">
-                                    <img src="{{ $type['image'] ?? 'https://via.placeholder.com/800x600' }}"
-                                        alt="{{ $type['name'] }}" class="object-cover w-full h-full">
+                                    <img src="{{ asset('storage/' . $boardingHouse->image_path) }}"
+                                        alt="{{ $boardingHouse->name }}" class="object-cover w-full h-full">
                                 </div>
                                 <div class="p-6">
                                     <h3 class="text-xl font-bold text-luxury-800 dark:text-luxury-200 mb-2">
-                                        {{ $type['name'] }}
+                                        {{ $boardingHouse->name }}
                                     </h3>
                                     <p class="text-luxury-600 dark:text-luxury-400 mb-4">
-                                        {{ $type['description'] }}
+                                        {{ \Illuminate\Support\Str::limit($boardingHouse->description, 100) }}
                                     </p>
                                     <div class="flex justify-between items-center">
-                                        <span class="text-2xl font-bold text-luxury-800 dark:text-luxury-200">
-                                            Rp{{ $type['price'] }}
+                                        <span class="text-lg font-bold text-luxury-800 dark:text-luxury-200">
+                                            {{ $boardingHouse->type_label }}
                                         </span>
-                                        <span class="text-sm text-luxury-600 dark:text-luxury-400">per bulan</span>
+                                        <a href="{{ route('guest.boarding-houses.show', $boardingHouse) }}"
+                                            class="text-sm font-medium text-luxury-600 dark:text-luxury-400 hover:text-luxury-800 dark:hover:text-luxury-200">
+                                            Lihat Detail &rarr;
+                                        </a>
                                     </div>
                                 </div>
                             </div>
