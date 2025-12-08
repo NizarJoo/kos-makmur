@@ -20,7 +20,21 @@
         rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php
+        $isProduction = app()->environment('production');
+        $manifestPath = $isProduction ? '../public_html/build/manifest.json' : public_path('build/manifest.json');
+    @endphp
+    
+    @if ($isProduction && file_exists($manifestPath))
+    @php
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+    @endphp
+        <link rel="stylesheet" href="{{ config('app.url') }}/build/{{ $manifest['resources/css/app.css']['file'] }}">
+        <script type="module" src="{{ config('app.url') }}/build/{{ $manifest['resources/js/app.js']['file'] }}"></script>
+    @else
+        @viteReactRefresh
+        @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @endif
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
@@ -50,7 +64,7 @@
         </div>
 
         <div class="z-10 mt-8 text-center text-sm text-luxury-600/60 dark:text-luxury-400/60">
-            <p>© {{ date('Y') }} Papikos. All rights reserved.</p>
+            <p>© {{ date('Y') }} Daddykos. All rights reserved.</p>
         </div>
     </div>
 </body>
