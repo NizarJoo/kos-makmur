@@ -17,6 +17,7 @@ use App\Models\Room;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VerificationController;
+use App\Models\District;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +27,8 @@ use App\Http\Controllers\VerificationController;
 
 Route::get('/', function () {
     $stats = [
-        'roomCount' => Room::count(),
-        'guestCount' => Guest::count(),
+        'roomCount' => BoardingHouse::count(),
+        'guestCount' => District::count(),
     ];
 
     $availableRooms = Room::where('status', 'available')->count();

@@ -150,7 +150,7 @@
                                         <h1 class="font-serif text-2xl font-bold text-luxury-800 dark:text-luxury-200">
                                             {{ config('app.name') }}
                                         </h1>
-                                        <p class="text-sm text-luxury-600 dark:text-luxury-400">Papikos Malang
+                                        <p class="text-sm text-luxury-600 dark:text-luxury-400">Daddykos Malang
                                         </p>
                                     </div>
                                 </div>
@@ -529,7 +529,7 @@
                         <h2 class="font-serif text-lg font-bold text-luxury-800 dark:text-luxury-200">
                             {{ config('app.name') }}
                         </h2>
-                        <p class="text-xs text-luxury-600 dark:text-luxury-400">Papikos Malang</p>
+                        <p class="text-xs text-luxury-600 dark:text-luxury-400">Daddykos Malang</p>
                     </div>
                 </div>
                 

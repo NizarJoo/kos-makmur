@@ -62,7 +62,7 @@
 
                     {{-- Rooms List --}}
                     <div class="mt-8">
-                        <h3 class="text-xl font-semibold mb-4">Kamar Tersedia</h3>
+                        <h3 class="text-xl font-semibold mb-4 dark:text-gray-200">Kamar Tersedia</h3>
                         @forelse ($boardingHouse->rooms as $room)
                             @if ($loop->first)
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -80,7 +80,7 @@
                                     @endif
                                 </div>
                                 <div class="p-4">
-                                    <h4 class="font-bold text-lg">{{ $room->type_name ?? 'Kamar' }}</h4>
+                                    <h4 class="font-bold text-lg dark:text-gray-200">{{ $room->type_name ?? 'Kamar' }}</h4>
                                     <p class="text-sm text-gray-500 mb-2">Kapasitas: {{ $room->capacity }} orang</p>
                                     <p class="text-lg font-semibold text-luxury-600 dark:text-luxury-300">
                                         Rp {{ number_format($room->price_per_month, 0, ',', '.') }} / bulan
@@ -95,7 +95,7 @@
                                 </div>
                             @endif
                         @empty
-                            <p class="text-gray-500">Tidak ada kamar tersedia saat ini.</p>
+                            <p class="text-gray-500 dark:text-gray-200">Tidak ada kamar tersedia saat ini.</p>
                         @endforelse
                     </div>
                 </div>

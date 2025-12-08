@@ -50,7 +50,7 @@
         </div>
 
         <div class="z-10 mt-8 text-center text-sm text-luxury-600/60 dark:text-luxury-400/60">
-            <p>© {{ date('Y') }} Papikos. All rights reserved.</p>
+            <p>© {{ date('Y') }} Daddykos. All rights reserved.</p>
         </div>
     </div>
 </body>
